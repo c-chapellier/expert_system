@@ -44,4 +44,51 @@ public class Resolver {
             return State.UNDEFINED;
         }
     }
+
+    public State resolve(Condition c) throws Exception{
+        if (c.c1 != null && c.c2 != null){
+            //two conditions
+            switch(c.operator) {
+                case AND:
+                    return Resolver.and(resolve(c.c1), resolve(c.c2));
+                case OR:
+                    return Resolver.or(resolve(c.c1), resolve(c.c2));
+                case XOR:
+                    return Resolver.xor(resolve(c.c1), resolve(c.c2));
+                case NOT:
+                    throw new Exception("Never happend");
+            }
+        } else if (c.c1 != null && c.v1 != null){
+            //one condition and one var
+            switch(c.operator) {
+                case AND:
+                    return Resolver.and(resolve(c.c1), c.v1.state);
+                case OR:
+                    return Resolver.or(resolve(c.c1), c.v1.state);
+                case XOR:
+                    return Resolver.xor(resolve(c.c1), c.v1.state);
+                case NOT:
+                    throw new Exception("Never happend");
+            }
+        } else if (c.v1 != null && c.v2 != null){
+            //two var
+            switch(c.operator) {
+                case AND:
+                    return Resolver.and(c.v1.state, c.v2.state);
+                case OR:
+                    return Resolver.or(c.v1.state, c.v2.state);
+                case XOR:
+                    return Resolver.xor(c.v1.state, c.v2.state);
+                case NOT:
+                    throw new Exception("Never happend");
+            }
+        } else if (c.v1 != null && c.v2 == null){
+            //one var
+            return c.v1.state;
+        } else if (c.c1 != null && c.v1 == null){
+            //one condition
+            return resolve(c.c1);
+        }
+        throw new Exception("Should never be reached");
+    }
 }

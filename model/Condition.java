@@ -1,11 +1,15 @@
 package model;
 
+import resolver.Resolver;
+
 public class Condition {
     public Variable v1;
     public Variable v2;
     public Condition c1;
     public Condition c2;
     public Operator operator;
+    public Operator op1;
+    public Operator op2;
 
     public Condition(Variable v1, Variable v2,Condition c1, Condition c2, Operator operator){
         this.v1 = v1;
