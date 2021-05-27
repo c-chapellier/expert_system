@@ -1,5 +1,11 @@
 package model;
 
+//if a => b
+//if a && b => c
+//(a && b) || c => d
+//(a && b) || (d && c) => e
+//if (a && b || c)
+
 public class Condition {
     public Variable v1;
     public Variable v2;

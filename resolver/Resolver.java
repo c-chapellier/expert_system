@@ -3,6 +3,7 @@ import model.*;
 
 public class Resolver {
 
+    //porte logic NOT
     public static State not(State state) {
         if (state == State.FALSE) {
             return State.TRUE;
@@ -13,6 +14,7 @@ public class Resolver {
         }
     }
 
+    //porte logic AND 
     public static State and(State state1, State state2){
         if(state1 == State.TRUE && state2 == State.TRUE){
             return State.TRUE;
@@ -23,6 +25,7 @@ public class Resolver {
         }
     }
 
+    //porte logic OR
     public static State or(State state1, State state2){
         if(state1 == State.TRUE || state2 == State.TRUE){
             return State.TRUE;
@@ -33,6 +36,7 @@ public class Resolver {
         }
     }
 
+    //porte logic XOR
     public static State xor(State state1, State state2){
         if( (state1 == State.TRUE && state2 == State.FALSE) ||
             (state1 == State.FALSE && state2 == State.TRUE)){
