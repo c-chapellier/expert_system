@@ -1,7 +1,5 @@
 package model;
 
-import resolver.Resolver;
-
 public class Condition {
     public Variable v1;
     public Variable v2;
