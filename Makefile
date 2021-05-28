@@ -8,9 +8,9 @@ ${NAME} :
 			javac $(addsuffix .java, $(SRCS))
 
 run :		${NAME}
-			java ${SRCS} inputs/example_input.txt
+			java ${SRCS} inputs/example_input.py
 
 clean :
 			rm -f *.class */*.class
 
-re :		fclean all
+re :		clean all
