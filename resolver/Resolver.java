@@ -55,8 +55,6 @@ public class Resolver {
                     return Resolver.or(resolve(c.c1), resolve(c.c2));
                 case XOR:
                     return Resolver.xor(resolve(c.c1), resolve(c.c2));
-                case NOT:
-                    throw new Exception("Never happend");
             }
         } else if (c.c1 != null && c.v1 != null){
             //one condition and one var
@@ -67,8 +65,6 @@ public class Resolver {
                     return Resolver.or(resolve(c.c1), c.v1.state);
                 case XOR:
                     return Resolver.xor(resolve(c.c1), c.v1.state);
-                case NOT:
-                    throw new Exception("Never happend");
             }
         } else if (c.v1 != null && c.v2 != null){
             //two var
@@ -79,8 +75,6 @@ public class Resolver {
                     return Resolver.or(c.v1.state, c.v2.state);
                 case XOR:
                     return Resolver.xor(c.v1.state, c.v2.state);
-                case NOT:
-                    throw new Exception("Never happend");
             }
         } else if (c.v1 != null && c.v2 == null){
             //one var

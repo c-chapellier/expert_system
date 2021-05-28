@@ -52,6 +52,10 @@ public class Parser {
         } else if (line.charAt(0) == '?') {
             this.parseQueries(line);
         } else {
+            System.out.println(line);
+            line = line.replaceAll("[(][A-Q][)]", "$0"); // ici bg
+            line = line.replaceAll("[(]![A-Q][)]", "$0");
+            System.out.println(line);
             index = line.indexOf("<=>");
             if (index != -1) {
                 String reactants = line.substring(0, index);
