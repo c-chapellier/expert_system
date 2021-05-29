@@ -86,12 +86,35 @@ public class Expert {
             updateStateNode();
             actualScore = updateScoreToNode();
         }
-        System.out.println("END");
-        outputFinalStates();
     }
 
-    private static void solveBackward(){
+    private static Node getNode(Variable v) throws Exception{
+        for (int i = 0; i < nodes.size(); ++i){
+            if (nodes.get(i).name.compareTo("" + v.name) == 0)
+                return nodes.get(i);
+        }
+        throw new Exception ("Never happen");
+    }
 
+    private static void solveB(Node node){
+        if (node.p1 != null){
+            solveB(node.p1);
+        }
+        if (node.p2 != null){
+            solveB(node.p2);
+        }
+        node.updateState();
+    }
+
+    private static void solveBackward() throws Exception{
+        // 0 step : add child for each node
+        addChildToNode();
+        // 2 step : set fixed nodes
+        setFixedNode();
+        for (int i = 0; i < queries.size(); ++i) {
+            Node n = getNode(queries.get(i));
+            solveB(n);
+        }
     }
 
     // Convert the fatcs and the rule into a graph
@@ -112,7 +135,10 @@ public class Expert {
         try {
             parser.parseFile();
             preProcessing();
-            solveForward();
+            //solveForward();
+            solveBackward();
+            System.out.println("END");
+            outputFinalStates();
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
