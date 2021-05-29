@@ -49,7 +49,7 @@ public class Resolver {
         }
     }
 
-    public State resolve(Condition c) throws Exception{
+    public static State resolve(Condition c){
         if (c.c1 != null && c.c2 != null){
             //two conditions
             switch(c.operator) {
@@ -159,6 +159,7 @@ public class Resolver {
             //one condition
             return c.not1 ? not(resolve(c.c1)) : resolve(c.c1);
         }
-        throw new Exception("Should never be reached");
+        //Never reached
+        return State.UNDEFINED;
     }
 }

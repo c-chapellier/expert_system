@@ -1,4 +1,5 @@
 import parser.*;
+import resolver.Processor;
 import model.*;
 import java.util.*;
 
@@ -11,6 +12,7 @@ public class Expert {
     //Variables à déterminer la valeur
     private static final List<Variable> queries = new ArrayList<>();
     // //Variables avec leur état de l'étape précédente
+    private static List<Node> nodes;
     // private static List<Variable> previous = new ArrayList<>();
     // //Variables avec leur état de l'étape actuel
     // private static List<Variable> actual = new ArrayList<>();
@@ -36,12 +38,22 @@ public class Expert {
     //     }
     // }
 
+    // Convert the fatcs and the rule into a graph
+    private static void preProcessing() throws Exception{
+        nodes = new Processor().preprocess(variables, rules);
+        for (int i = 0; i < nodes.size(); ++i){
+            System.out.println(nodes.get(i));
+            System.out.println("* * * * * * * * * *");
+        }
+    }
+
     public static void main(String[] args){
         System.out.print("--------- Expert ----------\n");
         Parser parser = new Parser(rules, variables, queries, args[0]);
 
         try {
             parser.parseFile();
+            preProcessing();
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }

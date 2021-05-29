@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // priority
 // () ! + | ^ => <=>
 
@@ -12,6 +15,8 @@ public class Condition {
     public boolean not1 = false;
     public boolean not2 = false;
     public boolean isNot = false;
+    public List<Variable> input = new ArrayList<>();
+    public List<Variable> output = new ArrayList<>();
 
     public Condition(Variable v1, Variable v2,Condition c1, Condition c2, Operator operator){
         this.v1 = v1;
