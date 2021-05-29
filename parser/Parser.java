@@ -43,12 +43,23 @@ public class Parser {
         }
     }
 
-    private String removeUselssP(String line){
+    private String removeUselssP1(String line){
         Pattern pattern = Pattern.compile("\\(([A-Z])\\)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(line);
         while(matcher.find()){
             line = line.replaceAll("\\(([A-Z])\\)", "$1");
             pattern = Pattern.compile("\\(([A-Z])\\)", Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(line);
+        }
+        return line;
+    }
+
+    private String removeUselssP2(String line){
+        Pattern pattern = Pattern.compile("\\((![A-Z])\\)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(line);
+        while(matcher.find()){
+            line = line.replaceAll("\\((![A-Z])\\)", "$1");
+            pattern = Pattern.compile("\\((![A-Z])\\)", Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(line);
         }
         return line;
@@ -68,10 +79,11 @@ public class Parser {
         } else {
             System.out.println("Line: " + line);
             //line = line.replaceAll("\\(([A-Z])\\)", "$1"); // ici bg
-            line = removeUselssP(line);
+            line = removeUselssP1(line);
             System.out.println("Line: " + line);
+            line = removeUselssP2(line);
             //line = line.replaceAll("[(]![A-Z][)]", "$0");
-            System.out.println(line);
+            System.out.println("Line: " + line);
             index = line.indexOf("<=>");
             if (index != -1) {
                 String reactants = line.substring(0, index);
