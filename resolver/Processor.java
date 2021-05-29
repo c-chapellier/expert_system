@@ -36,6 +36,7 @@ public class Processor {
         } else {
             Node already = allNodes.get(allNodes.indexOf(node));
             if (already.p1 != null && already.p2 != null){
+                System.out.println("TWO PARENT: " + node.name);
                 Node newParent = new Node(concatName(already.p1.name, already.op, already.p2.name), already.p1, already.p2, already.op);
                 if (allNodes.contains(newParent)){
                     Node tmp = already.p1;
@@ -44,7 +45,7 @@ public class Processor {
                     allNodes.add(newParent);
                 }
             } else if (already.p1 != null && already.p2 == null){
-                System.out.println("ONE PARENT");
+                System.out.println("ONE PARENT: " + node.name);
                 already.p2 = node.p1;
                 already.op = Operator.AND;
             } else {

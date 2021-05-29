@@ -5,7 +5,6 @@ import java.util.*;
 import model.*;
 
 public class Parser {
-
     //List des if and if
     private List<Rule> rules = null;
     //Variables avec leur état initiale
@@ -27,7 +26,7 @@ public class Parser {
             if (!Character.isUpperCase(line.charAt(i))) {
                 throw new Exception("States must only be uppercase letters.");
             }
-            this.variables.add(new Variable(line.charAt(i), State.UNDEFINED));
+            this.variables.add(new Variable(line.charAt(i), State.TRUE));
         }
     }
 

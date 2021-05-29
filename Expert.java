@@ -4,39 +4,95 @@ import model.*;
 import java.util.*;
 
 public class Expert {
-
     //List des if and if
     private static final List<Rule> rules = new ArrayList<>();
     //Variables avec leur état initiale
     private static final List<Variable> variables = new ArrayList<>();
     //Variables à déterminer la valeur
     private static final List<Variable> queries = new ArrayList<>();
-    // //Variables avec leur état de l'étape précédente
+    //The graph
     private static List<Node> nodes;
-    // private static List<Variable> previous = new ArrayList<>();
-    // //Variables avec leur état de l'étape actuel
-    // private static List<Variable> actual = new ArrayList<>();
 
-    // private static boolean goDeeper(){
-    //     for (int i = 0; i < actual.size(); ++i){
-    //         for (int j = 0; j < previous.size(); ++j){
-    //             if( actual.get(i).name == previous.get(j).name &&
-    //                 actual.get(i).state != previous.get(j).state)
-    //                     return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    private static void outputFinalStates(){
+        for (int i = 0; i < nodes.size(); ++i){
+            if (nodes.get(i).name.length() == 1)
+                System.out.println(nodes.get(i).name + " : " + nodes.get(i).state);
+        }
+    }
 
-    // private static void solve(){
-    //     //While a state of var change from previous state
-    //     while(goDeeper()){
-    //         //apply each implies
+    private static void addChildToNode(){
+        for (int i = 0; i < nodes.size(); ++i){
+            Node node = nodes.get(i);
+            if (node.p1 != null){
+                node.p1.addChild(node);
+            }
+            if (node.p2 != null){
+                node.p2.addChild(node);
+            }
+        }
+    }
 
-    //         //set previous state = current state
-    //         //set current state = new state
-    //     }
-    // }
+    private static int setScoreToNode(){
+        int score = 0;
+        for (int i = 0; i < nodes.size(); ++i){
+            score += nodes.get(i).setScore();
+        }
+        return score;
+    }
+
+    private static int updateScoreToNode(){
+        int score = 0;
+        for (int i = 0; i < nodes.size(); ++i){
+            score += nodes.get(i).updateScore();
+        }
+        return score;
+    }
+
+    private static void setFixedNode(){
+        for (int i = 0; i < nodes.size(); ++i){
+            Node node = nodes.get(i);
+            node.state = State.UNDEFINED;
+            node.fixed = false;
+            for (int j = 0; j < variables.size(); ++j){
+                if(node.name.compareTo("" + variables.get(j).name) == 0){
+                    node.state = variables.get(j).state;
+                    node.fixed = true;
+                }
+            }
+        }
+    }
+
+    private static void updateStateNode(){
+        for (int i = 0; i < nodes.size(); ++i){
+            nodes.get(i).updateState();
+        }
+    }
+
+    private static void solveForward(){
+        int previousScore, actualScore;
+        // 0 step : add child for each node
+        addChildToNode();
+        // 2 step : set fixed nodes
+        setFixedNode();
+        // 3 step : set the score for all nodes # A B C ...
+        previousScore = setScoreToNode();
+        actualScore = updateScoreToNode();
+        System.out.println(previousScore + " " + actualScore);
+        
+        // 4 step : for each known node, decrement the score from other nodes from one if they come from it
+        while(previousScore > actualScore) {
+            System.out.println(previousScore + " " + actualScore);
+            previousScore = actualScore;
+            updateStateNode();
+            actualScore = updateScoreToNode();
+        }
+        System.out.println("END");
+        outputFinalStates();
+    }
+
+    private static void solveBackward(){
+
+    }
 
     // Convert the fatcs and the rule into a graph
     private static void preProcessing() throws Exception{
@@ -56,6 +112,7 @@ public class Expert {
         try {
             parser.parseFile();
             preProcessing();
+            solveForward();
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
