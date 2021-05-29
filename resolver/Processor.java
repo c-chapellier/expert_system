@@ -14,12 +14,11 @@ public class Processor {
     }
     
     public List<Node> preprocess(List<Variable> vars, List<Rule> rules) throws Exception{
-        List<Node> nodes = new ArrayList<>();
         for (int i = 0; i < rules.size(); ++i){
             Node input = resolveInputCondition(rules.get(i).c1);
             resolveOutputCondition(input, rules.get(i).c2);
         }
-        return nodes;
+        return allNodes;
     }
 
     private Node addNodeToList(Node node){
@@ -39,12 +38,15 @@ public class Processor {
             if (already.p1 != null && already.p2 != null){
                 Node newParent = new Node(concatName(already.p1.name, already.op, already.p2.name), already.p1, already.p2, already.op);
                 if (allNodes.contains(newParent)){
+                    Node tmp = already.p1;
                     already.p1 = newParent;
-                    already.p2 = node.p1;
+                    already.p2 = tmp;
                     allNodes.add(newParent);
                 }
             } else if (already.p1 != null && already.p2 == null){
-                already.p2 = node.p2;
+                System.out.println("ONE PARENT");
+                already.p2 = node.p1;
+                already.op = Operator.AND;
             } else {
                 already.p1 = node.p1;
             }
@@ -66,35 +68,49 @@ public class Processor {
     // this fonction create a map of all the input condition combined
     // Only and or xor for the moment
     private Node resolveInputCondition(Condition c) throws Exception {
+        System.out.println("C: " + c);
+        System.out.println("C1: " + c.c1);
+        System.out.println("C2: " + c.c2);
         if (c.c1 != null && c.c2 != null){
             //two conditions
+            System.out.println("TWO CONDITIONS");
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = resolveInputCondition(c.c2); // parent node
+            addNodeToList(p1);
+            addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
             return addNodeToList(node);
         } else if (c.c1 != null && c.v1 != null){
             //one condition and one var
+            System.out.println("ONE CONDITIONS - ONE VAR");
             Node p1 = resolveInputCondition(c.c1); // parent node
-            Node p2 = new Node("" + c.v1, null, null, Operator.AND); // parent node
+            Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
+            addNodeToList(p1);
+            addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
-            Node p1 = new Node("" + c.v1, null, null, Operator.AND); // parent node
-            Node p2 = new Node("" + c.v2, null, null, Operator.AND); // parent node
+            System.out.println("TWO VARS");
+            Node p1 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
+            Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
+            addNodeToList(p1);
+            addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
-            Node p1 = new Node("" + c.v1, null, null, Operator.AND);
+            System.out.println("ONE VAR");
+            Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
             return addNodeToList(p1);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             // never reached
             //one condition
+            System.out.println("ONE CONDITION");
             Node p1 = resolveInputCondition(c.c1);
             return addNodeToList(p1);
         }
-        throw new Exception("Never reached");
+        throw new Exception("Never reached input" + c);
     }
 
     // Every output condition is made of either:
@@ -104,7 +120,7 @@ public class Processor {
     // 1 var
     // this fonction create a map of all the input condition combined
     // Only and for the moment
-    private void resolveOutputCondition(Node input, Condition c) throws Exception{
+    private void resolveOutputCondition(Node input, Condition c) {
         if (c.c1 != null && c.c2 != null){
             //two conditions
             resolveOutputCondition(input, c.c1);
@@ -129,6 +145,5 @@ public class Processor {
             //one condition
             resolveOutputCondition(input, c.c1);
         }
-        throw new Exception("Never reached");
     }
 }

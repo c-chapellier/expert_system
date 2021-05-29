@@ -41,6 +41,8 @@ public class Expert {
     // Convert the fatcs and the rule into a graph
     private static void preProcessing() throws Exception{
         nodes = new Processor().preprocess(variables, rules);
+        System.out.println("Size: " + nodes.size());
+        System.out.println("#####################################");
         for (int i = 0; i < nodes.size(); ++i){
             System.out.println(nodes.get(i));
             System.out.println("* * * * * * * * * *");
@@ -58,15 +60,15 @@ public class Expert {
             System.out.println("Exception -> " + e.getMessage());
         }
 
-        for (int i = 0; i < rules.size(); ++i) {
-            System.out.println("rule[" + i + "] = " + rules.get(i).toString());
-        }
-        for (int i = 0; i < variables.size(); ++i) {
-            System.out.println("variable[" + i + "] = " + variables.get(i).toString());
-        }
-        for (int i = 0; i < queries.size(); ++i) {
-            System.out.println("query[" + i + "] = " + queries.get(i).toString());
-        }
-        System.out.print("--------- Expert ----------\n");
+        //for (int i = 0; i < rules.size(); ++i) {
+            //System.out.println("rule[" + i + "] = " + rules.get(i).toString());
+        //}
+        //for (int i = 0; i < variables.size(); ++i) {
+            //System.out.println("variable[" + i + "] = " + variables.get(i).toString());
+        //}
+        //for (int i = 0; i < queries.size(); ++i) {
+            //System.out.println("query[" + i + "] = " + queries.get(i).toString());
+        //}
+        //System.out.print("--------- Expert ----------\n");
     }
 }

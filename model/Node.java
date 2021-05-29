@@ -29,9 +29,9 @@ public class Node {
         String str = "";
         str += name + "\n";
         if (p1 != null)
-            str += p1.toString();
+            str += p1.toString() + "\n";
         if (p2 != null)
-            str += p2.toString();
+            str += p2.toString()  + "\n";
         return str;
     }
 }

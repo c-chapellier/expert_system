@@ -2,7 +2,8 @@
 # all the required rules and symbols, along with the bonus ones, will be
 # shown here. spacing is not important
 
-((((A + ((!(B | C) + D) ^ !E)) ^ F + G | H)))  =>  E   # C implies E
+(A | B) ^ C  =>  E  # A and B implies E : MAP OK
+D  =>  E  # A and B implies E : MAP OK
 # C           =>      E           # C implies E
 # A + B + C   =>      D           # A and B and C implies D
 #  A | B       =>      C           # A or B implies C
@@ -15,8 +16,8 @@
 # A + B       <=>     C           # A and B if and only if C
 # A + B       <=>     !C          # A and B if and only if not C
 
-=ABG                        # Initial facts : A, B and G are true. All others are false.
+=AB                        # Initial facts : A, B and G are true. All others are false.
                             # If no facts are initially true, then a simple "=" followed
                             # by a newline is used
 
-?GVX                        # Queries : What are G, V and X ?
+?E                       # Queries : What are G, V and X ?

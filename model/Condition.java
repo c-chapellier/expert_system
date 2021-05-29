@@ -110,13 +110,19 @@ public class Condition {
         }
         if (i == line.length() - 2) {
             System.out.println("i == size");
-            this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            if (this.v1 == null)
+                this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            else
+                this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
         // } else if (i == line.length() - 3 && line.charAt(line.length() - 2) == '!') {
         //     System.out.println("i == size - 1");
         //     this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED, true);
         } else {
             System.out.println("i != size");
-            this.c2 = new Condition(line.substring(i + 1));
+            if (this.c1 == null)
+                this.c1 = new Condition(line.substring(i + 1));
+            else
+                this.c2 = new Condition(line.substring(i + 1));
         }
     }
 
