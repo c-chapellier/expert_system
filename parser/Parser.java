@@ -2,6 +2,9 @@ package parser;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import model.*;
 
 public class Parser {
@@ -40,6 +43,17 @@ public class Parser {
         }
     }
 
+    private String removeUselssP(String line){
+        Pattern pattern = Pattern.compile("\\(([A-Z])\\)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(line);
+        while(matcher.find()){
+            line = line.replaceAll("\\(([A-Z])\\)", "$1");
+            pattern = Pattern.compile("\\(([A-Z])\\)", Pattern.CASE_INSENSITIVE);
+            matcher = pattern.matcher(line);
+        }
+        return line;
+    }
+
     public void parseLine(String line) throws Exception {
         int index = line.indexOf("#");
         if (index != -1) {
@@ -52,9 +66,11 @@ public class Parser {
         } else if (line.charAt(0) == '?') {
             this.parseQueries(line);
         } else {
-            System.out.println(line);
-            line = line.replaceAll("[(][A-Q][)]", "$0"); // ici bg
-            line = line.replaceAll("[(]![A-Q][)]", "$0");
+            System.out.println("Line: " + line);
+            //line = line.replaceAll("\\(([A-Z])\\)", "$1"); // ici bg
+            line = removeUselssP(line);
+            System.out.println("Line: " + line);
+            //line = line.replaceAll("[(]![A-Z][)]", "$0");
             System.out.println(line);
             index = line.indexOf("<=>");
             if (index != -1) {
