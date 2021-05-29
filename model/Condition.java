@@ -9,8 +9,8 @@ public class Condition {
     public Condition c1 = null;
     public Condition c2 = null;
     public Operator operator = null;
-    public Operator op1 = null;
-    public Operator op2 = null;
+    public boolean not1 = false;
+    public boolean not2 = false;
     public boolean isNot = false;
 
     public Condition(Variable v1, Variable v2,Condition c1, Condition c2, Operator operator){
