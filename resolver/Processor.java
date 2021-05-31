@@ -13,7 +13,7 @@ public class Processor {
         map.put(Operator.XOR, "xor");
     }
     
-    public List<Node> preprocess(List<Variable> vars, List<Rule> rules) throws Exception{
+    public List<Node> preprocess(List<Rule> rules) throws Exception{
         for (int i = 0; i < rules.size(); ++i){
             Node input = resolveInputCondition(rules.get(i).c1);
             resolveOutputCondition(input, rules.get(i).c2);
@@ -69,7 +69,7 @@ public class Processor {
     // this fonction create a map of all the input condition combined
     // Only and or xor for the moment
     private Node resolveInputCondition(Condition c) throws Exception {
-        System.out.println("C: " + c);
+        System.out.println("C: " + c + " " + c.isNot);
         System.out.println("C1: " + c.c1);
         System.out.println("C2: " + c.c2);
         if (c.c1 != null && c.c2 != null){
@@ -80,6 +80,10 @@ public class Processor {
             addNodeToList(p1);
             addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
+            if (c.c1.isNot)
+                node.not1 = true;
+            if (c.c2.isNot)
+                node.not2 = true;
             return addNodeToList(node);
         } else if (c.c1 != null && c.v1 != null){
             //one condition and one var
@@ -89,6 +93,10 @@ public class Processor {
             addNodeToList(p1);
             addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
+            if (c.c1.isNot)
+                node.not1 = true;
+            if (c.v1.isNot)
+                node.not2 = true;
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
@@ -98,17 +106,28 @@ public class Processor {
             addNodeToList(p1);
             addNodeToList(p2);
             Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
+            if (c.v1.isNot)
+                node.not1 = true;
+            if (c.v2.isNot)
+                node.not2 = true;
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
+            System.out.println(c.v1.isNot);
+            if (c.v1.isNot){
+                System.out.println("YES");
+                p1.not1 = true;
+            }
             return addNodeToList(p1);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             // never reached
             //one condition
             System.out.println("ONE CONDITION");
             Node p1 = resolveInputCondition(c.c1);
+            if (c.c1.isNot)
+                p1.not1 = true;
             return addNodeToList(p1);
         }
         throw new Exception("Never reached input" + c);
@@ -130,16 +149,24 @@ public class Processor {
             //one condition and one var
             resolveOutputCondition(input, c.c1);
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
+            if(c.v1.isNot)
+                node.not1 = true;
             addNodeToListOutput(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
             Node node1 = new Node("" + c.v1.name, input, null, Operator.AND);
             Node node2 = new Node("" + c.v2.name, input, null, Operator.AND);
+            if(c.v1.isNot)
+                node1.not1 = true;
+            if(c.v1.isNot)
+                node2.not1 = true;
             addNodeToListOutput(node1);
             addNodeToListOutput(node2);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
+            if(c.v1.isNot)
+                node.not1 = true;
             addNodeToListOutput(node);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             // never reached

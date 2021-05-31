@@ -145,13 +145,15 @@ public class Expert {
 
     // Convert the fatcs and the rule into a graph
     private static void preProcessing() throws Exception{
-        nodes = new Processor().preprocess(variables, rules);
+        nodes = new Processor().preprocess(rules);
+        /*
         System.out.println("Size: " + nodes.size());
         System.out.println("#####################################");
         for (int i = 0; i < nodes.size(); ++i){
             System.out.println(nodes.get(i));
             System.out.println("* * * * * * * * * *");
         }
+        */
     }
 
     private static void checkArgs(String[]args){

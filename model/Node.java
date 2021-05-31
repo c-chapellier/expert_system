@@ -10,6 +10,8 @@ public class Node {
     public Node p1;
     public Node p2;
     public Operator op;
+    public boolean not1 = false;
+    public boolean not2 = false;
     public List<Node> childs = new ArrayList<>();
     public int score = 0;
     public boolean fixed = false;
@@ -61,22 +63,42 @@ public class Node {
         if (fixed)
             return ret;
         if (p1 != null && p2 != null) {
-            System.out.println(name + " has two parents ");
+            //System.out.println(name + " has two parents ");
             if (p1.fixed && p2.fixed) {
-                System.out.println("they are both fixed " + op);
+                //System.out.println("they are both fixed " + op);
                 switch(op) {
                     case AND:
-                        System.out.println("AND");
-                        state = Resolver.and(p1.state, p2.state);
+                        //System.out.println("AND");
+                        if(!not1 && !not2)
+                            state = Resolver.and(p1.state, p2.state);
+                        else if (!not1 && not2)
+                            state = Resolver.and(p1.state, Resolver.not(p2.state));
+                        else if (not1 && !not2)
+                            state = Resolver.and(Resolver.not(p1.state), p2.state);
+                        else
+                            state = Resolver.and(Resolver.not(p1.state), Resolver.not(p2.state));
                         break;
                     case OR:
-                        System.out.println("OR");
-                        state = Resolver.or(p1.state, p2.state);
-                        System.out.println(state);
+                        //System.out.println("OR");
+                        if(!not1 && !not2)
+                            state = Resolver.or(p1.state, p2.state);
+                        else if (!not1 && not2)
+                            state = Resolver.or(p1.state, Resolver.not(p2.state));
+                        else if (not1 && !not2)
+                            state = Resolver.or(Resolver.not(p1.state), p2.state);
+                        else
+                            state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
                         break;
                     case XOR:
-                        System.out.println("XOR");
-                        state = Resolver.xor(p1.state, p2.state);
+                        //System.out.println("XOR");
+                        if(!not1 && !not2)
+                            state = Resolver.xor(p1.state, p2.state);
+                        else if (!not1 && not2)
+                            state = Resolver.xor(p1.state, Resolver.not(p2.state));
+                        else if (not1 && !not2)
+                            state = Resolver.xor(Resolver.not(p1.state), p2.state);
+                        else
+                            state = Resolver.xor(Resolver.not(p1.state), Resolver.not(p2.state));
                         break;
                 }
                 ret += makeString(p1, p2);
@@ -84,7 +106,14 @@ public class Node {
             } else if (p1.fixed || p2.fixed){
                 System.out.println("only one is fixed");
                 if (op == Operator.OR){
-                    state = Resolver.or(p1.state, p2.state);
+                    if(!not1 && !not2)
+                        state = Resolver.or(p1.state, p2.state);
+                    else if (!not1 && not2)
+                        state = Resolver.or(p1.state, Resolver.not(p2.state));
+                    else if (not1 && !not2)
+                        state = Resolver.or(Resolver.not(p1.state), p2.state);
+                    else
+                        state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
                     ret += makeString(p1, p2);
                     fixed = true;
                 }
@@ -93,7 +122,10 @@ public class Node {
             System.out.println(name + " has one parents");
             if (p1.fixed){
                 System.out.println("and he is fixed");
-                state = p1.state;
+                if (not1)
+                    state = Resolver.not(p1.state);
+                else
+                    state = p1.state;
                 ret += makeString(p1);
                 fixed = true;
             }
@@ -115,7 +147,7 @@ public class Node {
 
     @Override
     public String toString(){
-        String str = "";
+        String str = not1 + " " + not2;
         str += name + "\n";
         if (p1 != null)
             str += p1.toString() + "\n";
