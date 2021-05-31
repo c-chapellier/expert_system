@@ -3,6 +3,7 @@ package model;
 public class Variable {
     public char name;
     public State state;
+    public boolean fix = false;
     // !A
     public boolean isNot = false;
 

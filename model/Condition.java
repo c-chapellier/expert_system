@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // priority
 // () ! + | ^ => <=>
 
@@ -9,9 +12,11 @@ public class Condition {
     public Condition c1 = null;
     public Condition c2 = null;
     public Operator operator = null;
-    public Operator op1 = null;
-    public Operator op2 = null;
+    public boolean not1 = false;
+    public boolean not2 = false;
     public boolean isNot = false;
+    public List<Variable> input = new ArrayList<>();
+    public List<Variable> output = new ArrayList<>();
 
     public Condition(Variable v1, Variable v2,Condition c1, Condition c2, Operator operator){
         this.v1 = v1;
@@ -125,11 +130,20 @@ public class Condition {
             this.c1 = new Condition(line.substring(0, i));
         }
         if (i == line.length() - 2) {
-            System.err.println("i == size [" + line.charAt(line.length() - 1) + "]");
-            this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            System.out.println("i == size");
+            if (this.v1 == null)
+                this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            else
+                this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+        // } else if (i == line.length() - 3 && line.charAt(line.length() - 2) == '!') {
+        //     System.out.println("i == size - 1");
+        //     this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED, true);
         } else {
-            System.err.println("i != size [" + line.substring(i + 1) + "]");
-            this.c2 = new Condition(line.substring(i + 1));
+            System.out.println("i != size");
+            if (this.c1 == null)
+                this.c1 = new Condition(line.substring(i + 1));
+            else
+                this.c2 = new Condition(line.substring(i + 1));
         }
     }
 

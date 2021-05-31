@@ -49,44 +49,117 @@ public class Resolver {
         }
     }
 
-    public State resolve(Condition c) throws Exception{
+    public static State resolve(Condition c){
         if (c.c1 != null && c.c2 != null){
             //two conditions
             switch(c.operator) {
                 case AND:
-                    return Resolver.and(resolve(c.c1), resolve(c.c2));
+                    if(!c.not1 && !c.not2){
+                        return Resolver.and(resolve(c.c1), resolve(c.c2));
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.and(not(resolve(c.c1)), resolve(c.c2));
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.and(resolve(c.c1), not(resolve(c.c2)));
+                    } else {
+                        return Resolver.and(not(resolve(c.c1)), not(resolve(c.c2)));
+                    }
                 case OR:
-                    return Resolver.or(resolve(c.c1), resolve(c.c2));
+                    if(!c.not1 && !c.not2){
+                        return Resolver.or(resolve(c.c1), resolve(c.c2));
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.or(not(resolve(c.c1)), resolve(c.c2));
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.or(resolve(c.c1), not(resolve(c.c2)));
+                    } else {
+                        return Resolver.or(not(resolve(c.c1)), not(resolve(c.c2)));
+                    }
                 case XOR:
-                    return Resolver.xor(resolve(c.c1), resolve(c.c2));
+                    if(!c.not1 && !c.not2){
+                        return Resolver.xor(resolve(c.c1), resolve(c.c2));
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.xor(not(resolve(c.c1)), resolve(c.c2));
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.xor(resolve(c.c1), not(resolve(c.c2)));
+                    } else {
+                        return Resolver.xor(not(resolve(c.c1)), not(resolve(c.c2)));
+                    }
             }
         } else if (c.c1 != null && c.v1 != null){
             //one condition and one var
             switch(c.operator) {
                 case AND:
-                    return Resolver.and(resolve(c.c1), c.v1.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.and(resolve(c.c1), c.v1.state);
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.and(not(resolve(c.c1)), c.v1.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.and(resolve(c.c1), not(c.v1.state));
+                    } else {
+                        return Resolver.and(not(resolve(c.c1)), not(c.v1.state));
+                    }
                 case OR:
-                    return Resolver.or(resolve(c.c1), c.v1.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.or(resolve(c.c1), c.v1.state);
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.or(not(resolve(c.c1)), c.v1.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.or(resolve(c.c1), not(c.v1.state));
+                    } else {
+                        return Resolver.or(not(resolve(c.c1)), not(c.v1.state));
+                    }
                 case XOR:
-                    return Resolver.xor(resolve(c.c1), c.v1.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.xor(resolve(c.c1), c.v1.state);
+                    } else if (c.not1 && !c.not2) {
+                        return Resolver.xor(not(resolve(c.c1)), c.v1.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.xor(resolve(c.c1), not(c.v1.state));
+                    } else {
+                        return Resolver.xor(not(resolve(c.c1)), not(c.v1.state));
+                    }
             }
         } else if (c.v1 != null && c.v2 != null){
             //two var
             switch(c.operator) {
                 case AND:
-                    return Resolver.and(c.v1.state, c.v2.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.and(c.v1.state, c.v2.state);
+                    } else if(c.not1 && !c.not2) {
+                        return Resolver.and(not(c.v1.state), c.v2.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.and(c.v1.state, not(c.v2.state));
+                    } else {
+                        return Resolver.and(not(c.v1.state), not(c.v2.state));
+                    }
                 case OR:
-                    return Resolver.or(c.v1.state, c.v2.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.or(c.v1.state, c.v2.state);
+                    } else if(c.not1 && !c.not2) {
+                        return Resolver.or(not(c.v1.state), c.v2.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.or(c.v1.state, not(c.v2.state));
+                    } else {
+                        return Resolver.or(not(c.v1.state), not(c.v2.state));
+                    }
                 case XOR:
-                    return Resolver.xor(c.v1.state, c.v2.state);
+                    if(!c.not1 && !c.not2){
+                        return Resolver.xor(c.v1.state, c.v2.state);
+                    } else if(c.not1 && !c.not2) {
+                        return Resolver.xor(not(c.v1.state), c.v2.state);
+                    } else if (!c.not1 && c.not2) {
+                        return Resolver.xor(c.v1.state, not(c.v2.state));
+                    } else {
+                        return Resolver.xor(not(c.v1.state), not(c.v2.state));
+                    }
             }
         } else if (c.v1 != null && c.v2 == null){
             //one var
-            return c.v1.state;
+            return c.not1 ? not(c.v1.state) : c.v1.state;
         } else if (c.c1 != null && c.v1 == null){
             //one condition
-            return resolve(c.c1);
+            return c.not1 ? not(resolve(c.c1)) : resolve(c.c1);
         }
-        throw new Exception("Should never be reached");
+        //Never reached
+        return State.UNDEFINED;
     }
 }
