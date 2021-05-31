@@ -1,0 +1,8 @@
+A => F
+D + E => A
+B + D => E
+C + A => D
+C + B => D
+
+=CBA
+?F

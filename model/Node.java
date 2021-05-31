@@ -44,9 +44,22 @@ public class Node {
         return score;
     }
 
-    public void updateState(){
+    private String makeString(Node p1){
+        String ret = "";
+        ret += "If " + p1.name + "(" + p1.state + ")  => " + name + "(" + state + ")";
+        return ret;
+    }
+
+    private String makeString(Node p1, Node p2){
+        String ret = "";
+        ret += "If " + p1.name + "(" + p1.state + ") " + op + " " + p2.name + "(" + p2.state + ") => " + name + "(" + state + ")";
+        return ret;
+    }
+
+    public String updateState(){
+        String ret = "";
         if (fixed)
-            return;
+            return ret;
         if (p1 != null && p2 != null) {
             System.out.println(name + " has two parents ");
             if (p1.fixed && p2.fixed) {
@@ -66,11 +79,13 @@ public class Node {
                         state = Resolver.xor(p1.state, p2.state);
                         break;
                 }
+                ret += makeString(p1, p2);
                 fixed = true;
             } else if (p1.fixed || p2.fixed){
                 System.out.println("only one is fixed");
                 if (op == Operator.OR){
                     state = Resolver.or(p1.state, p2.state);
+                    ret += makeString(p1, p2);
                     fixed = true;
                 }
             }
@@ -79,11 +94,13 @@ public class Node {
             if (p1.fixed){
                 System.out.println("and he is fixed");
                 state = p1.state;
+                ret += makeString(p1);
                 fixed = true;
             }
         } else {
             fixed = true;
         }
+        return ret;
     }
 
     @Override

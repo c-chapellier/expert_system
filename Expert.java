@@ -4,6 +4,10 @@ import model.*;
 import java.util.*;
 
 public class Expert {
+    private static Methode methode; // forward or backward
+    private static int timeComplexity;
+    private static int spaceComplexity;
+    private static String explanation = "";
     //List des if and if
     private static final List<Rule> rules = new ArrayList<>();
     //Variables avec leur état initiale
@@ -12,6 +16,11 @@ public class Expert {
     private static final List<Variable> queries = new ArrayList<>();
     //The graph
     private static List<Node> nodes;
+
+    private static void ouputComplexity(){
+        System.out.println("Space complexity: " + spaceComplexity);
+        System.out.println("Time complexity: " + timeComplexity);
+    }
 
     private static void outputFinalStates(){
         for (int i = 0; i < nodes.size(); ++i){
@@ -64,7 +73,9 @@ public class Expert {
 
     private static void updateStateNode(){
         for (int i = 0; i < nodes.size(); ++i){
-            nodes.get(i).updateState();
+            explanation += nodes.get(i).updateState();
+            explanation += "\n";
+            ++timeComplexity;
         }
     }
 
@@ -103,7 +114,9 @@ public class Expert {
         if (node.p2 != null){
             solveB(node.p2);
         }
-        node.updateState();
+        explanation += node.updateState();
+        explanation += "\n";
+        ++timeComplexity;
     }
 
     private static void solveBackward() throws Exception{
@@ -117,6 +130,19 @@ public class Expert {
         }
     }
 
+    private static void solve(String[]args) throws Exception{
+        spaceComplexity = nodes.size();
+        switch(methode){
+            case FORWARD:
+                solveForward();
+            case BACKWARD:
+                solveBackward();
+        }
+        ouputComplexity();
+        System.out.println(explanation);
+        outputFinalStates();
+    }
+
     // Convert the fatcs and the rule into a graph
     private static void preProcessing() throws Exception{
         nodes = new Processor().preprocess(variables, rules);
@@ -128,17 +154,30 @@ public class Expert {
         }
     }
 
+    private static void checkArgs(String[]args){
+        if (args.length != 2){
+            System.out.println( "ARsg needed : <file> <methode>\n" +
+                                "\tmethode:\n" +
+                                "\t\tforward\n" +
+                                "\t\tbackward\n"
+            );
+            System.exit(1);
+        }
+        if (args[1].compareTo("forward") == 0)
+            methode = Methode.FORWARD;
+        else if (args[1].compareTo("backward") == 0)
+            methode = Methode.BACKWARD;
+    }
+
     public static void main(String[] args){
+        checkArgs(args);
         System.out.print("--------- Expert ----------\n");
         Parser parser = new Parser(rules, variables, queries, args[0]);
 
         try {
             parser.parseFile();
             preProcessing();
-            //solveForward();
-            solveBackward();
-            System.out.println("END");
-            outputFinalStates();
+            solve(args);
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
