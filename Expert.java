@@ -40,11 +40,14 @@ public class Expert {
         System.out.print("--------- Expert ----------\n");
         Parser parser = new Parser(rules, variables, queries, args[0]);
 
+        System.out.print("------- Parsing --------\n");
         try {
+
             parser.parseFile();
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
+        System.out.print("------- Parsing --------\n");
 
         for (int i = 0; i < rules.size(); ++i) {
             System.out.println("rule[" + i + "] = " + rules.get(i).toString());
