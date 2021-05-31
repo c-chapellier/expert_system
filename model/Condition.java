@@ -163,8 +163,6 @@ public class Condition {
             str += this.v2.name;
         } else if (this.c2 != null) {
             str += this.c2.toString();
-        } else {
-            str += "houston we've got 2 problems";
         }
         str += ")";
         return str;
