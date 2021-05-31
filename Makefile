@@ -10,6 +10,9 @@ ${NAME} :
 run :		${NAME}
 			java ${SRCS} inputs/example_input.py
 
+rerun :		clean ${NAME}
+			java ${SRCS} inputs/example_input.py
+
 clean :
 			rm -f *.class */*.class
 

@@ -38,17 +38,13 @@ public class Expert {
 
     public static void main(String[] args){
         System.out.print("--------- Expert ----------\n");
-        Parser parser = new Parser(rules, variables, queries, args[0]);
-
         System.out.print("------- Parsing --------\n");
+        Parser parser = new Parser(rules, variables, queries, args[0]);
         try {
-
             parser.parseFile();
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
-        System.out.print("------- Parsing --------\n");
-
         for (int i = 0; i < rules.size(); ++i) {
             System.out.println("rule[" + i + "] = " + rules.get(i).toString());
         }
@@ -58,6 +54,7 @@ public class Expert {
         for (int i = 0; i < queries.size(); ++i) {
             System.out.println("query[" + i + "] = " + queries.get(i).toString());
         }
+        System.out.print("------- Parsing --------\n");
         System.out.print("--------- Expert ----------\n");
     }
 }

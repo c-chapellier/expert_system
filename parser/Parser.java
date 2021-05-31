@@ -77,13 +77,10 @@ public class Parser {
         } else if (line.charAt(0) == '?') {
             this.parseQueries(line);
         } else {
-            System.out.println("Line: " + line);
-            //line = line.replaceAll("\\(([A-Z])\\)", "$1"); // ici bg
+            System.out.println("line: " + line);
             line = removeUselssP1(line);
-            System.out.println("Line: " + line);
             line = removeUselssP2(line);
-            //line = line.replaceAll("[(]![A-Z][)]", "$0");
-            System.out.println("Line: " + line);
+            System.out.println("rmUselessP12: " + line);
             index = line.indexOf("<=>");
             if (index != -1) {
                 String reactants = line.substring(0, index);
@@ -102,7 +99,6 @@ public class Parser {
     public void parseFile() throws Exception {
         File file = new File(this.path);
         Scanner scan = new Scanner(file);
-
         while (scan.hasNextLine()) {
             String line = scan.nextLine().replaceAll("\\s", "");
             try {
