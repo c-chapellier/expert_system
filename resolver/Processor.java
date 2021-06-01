@@ -21,6 +21,12 @@ public class Processor {
         return allNodes;
     }
 
+    private String concatName(String n1, Operator op, String n2){
+        if (n1.compareTo(n2) < 0)
+            return n1 + map.get(op) + n2;
+        return n2 + map.get(op) + n1;
+    }
+
     private Node addNodeToList(Node node){
         if (!allNodes.contains(node)){
             allNodes.add(node);
@@ -55,12 +61,6 @@ public class Processor {
         }
     }
 
-    private String concatName(String n1, Operator op, String n2){
-        if (n1.compareTo(n2) < 0)
-            return n1 + map.get(op) + n2;
-        return n2 + map.get(op) + n1;
-    }
-
     // Every input condition is made of either:
     // 2 conditions
     // 2 vars
@@ -69,65 +69,89 @@ public class Processor {
     // this fonction create a map of all the input condition combined
     // Only and or xor for the moment
     private Node resolveInputCondition(Condition c) throws Exception {
-        System.out.println("C: " + c + " " + c.isNot);
-        System.out.println("C1: " + c.c1);
-        System.out.println("C2: " + c.c2);
         if (c.c1 != null && c.c2 != null){
             //two conditions
             System.out.println("TWO CONDITIONS");
+            Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = resolveInputCondition(c.c2); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
-            if (c.c1.isNot)
+            if(p1.isNot && p2.isNot){
+                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
                 node.not1 = true;
-            if (c.c2.isNot)
                 node.not2 = true;
+            } else if (p1.isNot && !p2.isNot) {
+                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node.not1 = true;
+            } else if (!p1.isNot && p2.isNot) {
+                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+                node.not2 = true;
+            } else {
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
+            if(c.isNot)
+                node.isNot = true;
             return addNodeToList(node);
         } else if (c.c1 != null && c.v1 != null){
             //one condition and one var
             System.out.println("ONE CONDITIONS - ONE VAR");
+            Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
-            if (c.c1.isNot)
+            if(p1.isNot && c.v1.isNot){
+                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
                 node.not1 = true;
-            if (c.v1.isNot)
                 node.not2 = true;
+            } else if (p1.isNot && !c.v1.isNot) {
+                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node.not1 = true;
+            } else if (!p1.isNot && c.v1.isNot) {
+                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+                node.not2 = true;
+            } else {
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
+            if(c.isNot)
+                node.isNot = true;
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
             System.out.println("TWO VARS");
+            Node node = null;
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            Node node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator); // node for the condition
-            if (c.v1.isNot)
+            if(c.v1.isNot && c.v2.isNot){
+                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
                 node.not1 = true;
-            if (c.v2.isNot)
                 node.not2 = true;
+            }else if(c.v1.isNot && !c.v2.isNot){
+                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node.not1 = true;
+            }else if(!c.v1.isNot && c.v2.isNot){
+                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+                node.not2 = true;
+            }else{
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
+            if(c.isNot)
+                node.isNot = true;
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
-            System.out.println(c.v1.isNot);
-            if (c.v1.isNot){
-                System.out.println("YES");
-                p1.not1 = true;
-            }
+            if(c.v1.isNot)
+                p1.isNot = true;
             return addNodeToList(p1);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
-            // never reached
             //one condition
             System.out.println("ONE CONDITION");
             Node p1 = resolveInputCondition(c.c1);
-            if (c.c1.isNot)
-                p1.not1 = true;
             return addNodeToList(p1);
         }
         throw new Exception("Never reached input" + c);
@@ -138,7 +162,7 @@ public class Processor {
     // 2 vars
     // 1 condition and 1 var
     // 1 var
-    // this fonction create a map of all the input condition combined
+    // this function create a map of all the input condition combined
     // Only and for the moment
     private void resolveOutputCondition(Node input, Condition c) {
         if (c.c1 != null && c.c2 != null){
@@ -150,16 +174,23 @@ public class Processor {
             resolveOutputCondition(input, c.c1);
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
             if(c.v1.isNot)
-                node.not1 = true;
+                node.isNot = true;
+            if(c.isNot){
+                node.isNot = node.isNot ? false : true;
+            }
             addNodeToListOutput(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
             Node node1 = new Node("" + c.v1.name, input, null, Operator.AND);
             Node node2 = new Node("" + c.v2.name, input, null, Operator.AND);
             if(c.v1.isNot)
-                node1.not1 = true;
+                node1.isNot = true;
             if(c.v1.isNot)
-                node2.not1 = true;
+                node2.isNot = true;
+            if(c.isNot) {
+                node1.isNot = node1.isNot ? false : true;
+                node2.isNot = node2.isNot ? false : true;
+            }
             addNodeToListOutput(node1);
             addNodeToListOutput(node2);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
@@ -167,6 +198,8 @@ public class Processor {
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
             if(c.v1.isNot)
                 node.not1 = true;
+            if(c.isNot)
+                node.isNot = true;
             addNodeToListOutput(node);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             // never reached
