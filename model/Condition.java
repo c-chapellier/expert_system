@@ -12,11 +12,10 @@ public class Condition {
     public Condition c1 = null;
     public Condition c2 = null;
     public Operator operator = null;
-    public boolean not1 = false;
-    public boolean not2 = false;
     public boolean isNot = false;
     public List<Variable> input = new ArrayList<>();
     public List<Variable> output = new ArrayList<>();
+    public String saveLine = null;
 
     public Condition(Variable v1, Variable v2,Condition c1, Condition c2, Operator operator){
         this.v1 = v1;
@@ -27,6 +26,7 @@ public class Condition {
     }
 
     public Condition(String line) throws Exception {
+        this.saveLine = line;
         System.err.println("condition from: " + line);
         line = this.rmParentheses(line);
         System.err.println("rm parentheses: " + line);
@@ -86,21 +86,18 @@ public class Condition {
         }
         // only a variable without operator
         if (this.operator == null) {
+            System.err.println("null op: " + line);
             this.v1 = new Variable(line.charAt(0), State.UNDEFINED);
         }
     }
 
     public String rmParentheses(String line) {
-        if (line.charAt(0) == '!') {
-            this.isNot = true;
+        while (line.charAt(0) == '!') {
+            this.isNot = !this.isNot;
             line = line.substring(1);
+            System.err.println("setting: " + line + " to " + this.isNot);
         }
         while (line.charAt(0) == '(' && line.charAt(line.length() - 1)== ')') {
-            if (line.charAt(0) == '!') {
-                this.isNot = true;
-                line = line.substring(1);
-                System.err.println("never happens");
-            }
             int deep = 0;
             for (int i = 0; i < line.length() - 1; ++i) {
                 if (line.charAt(i) == '(') {
@@ -117,6 +114,11 @@ public class Condition {
                 break;
             }
             line = line.substring(1, line.length() - 1);
+            while (line.charAt(0) == '!') {
+                this.isNot = !this.isNot;
+                line = line.substring(1);
+                System.err.println("setting: " + line + " to " + this.isNot);
+            }
         }
         return line;
     }
@@ -131,18 +133,15 @@ public class Condition {
         }
         if (i == line.length() - 2) {
             System.out.println("i == size");
-            if (this.v1 == null)
-                this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
-            else
+            // if (this.v1 == null)
+            //     this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            // else
                 this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
-        // } else if (i == line.length() - 3 && line.charAt(line.length() - 2) == '!') {
-        //     System.out.println("i == size - 1");
-        //     this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED, true);
         } else {
             System.out.println("i != size");
-            if (this.c1 == null)
-                this.c1 = new Condition(line.substring(i + 1));
-            else
+            // if (this.c1 == null)
+            //     this.c1 = new Condition(line.substring(i + 1));
+            // else
                 this.c2 = new Condition(line.substring(i + 1));
         }
     }
@@ -151,7 +150,6 @@ public class Condition {
     public String toString() {
         String str = this.isNot ? "!(" : "(";
         if (this.v1 != null) {
-            str += this.v1.isNot ? "!" : "";
             str += this.v1.name;
         } else if (this.c1 != null) {
             str += this.c1.toString();
@@ -173,7 +171,6 @@ public class Condition {
             }
         }
         if (this.v2 != null) {
-            str += this.v2.isNot ? "!" : "";
             str += this.v2.name;
         } else if (this.c2 != null) {
             str += this.c2.toString();
