@@ -4,7 +4,7 @@ import model.*;
 import java.util.*;
 
 public class Expert {
-    private static Methode methode; // forward or backward
+    private static Method method; // forward or backward
     private static int timeComplexity;
     private static int spaceComplexity;
     private static String explanation = "";
@@ -132,7 +132,7 @@ public class Expert {
 
     private static void solve(String[]args) throws Exception{
         spaceComplexity = nodes.size();
-        switch(methode){
+        switch(method){
             case FORWARD:
                 solveForward();
             case BACKWARD:
@@ -143,32 +143,32 @@ public class Expert {
         outputFinalStates();
     }
 
-    // Convert the fatcs and the rule into a graph
+    // Convert the facts and the rule into a graph
     private static void preProcessing() throws Exception{
         nodes = new Processor().preprocess(rules);
-        /*
+
         System.out.println("Size: " + nodes.size());
         System.out.println("#####################################");
         for (int i = 0; i < nodes.size(); ++i){
             System.out.println(nodes.get(i));
             System.out.println("* * * * * * * * * *");
         }
-        */
+
     }
 
     private static void checkArgs(String[]args){
         if (args.length != 2){
-            System.out.println( "ARsg needed : <file> <methode>\n" +
-                                "\tmethode:\n" +
+            System.out.println( "ARsg needed : <file> <method>\n" +
+                                "\tmethod:\n" +
                                 "\t\tforward\n" +
                                 "\t\tbackward\n"
             );
             System.exit(1);
         }
         if (args[1].compareTo("forward") == 0)
-            methode = Methode.FORWARD;
+            method = Method.FORWARD;
         else if (args[1].compareTo("backward") == 0)
-            methode = Methode.BACKWARD;
+            method = Method.BACKWARD;
     }
 
     public static void main(String[] args){
