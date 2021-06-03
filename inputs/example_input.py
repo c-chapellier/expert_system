@@ -2,10 +2,10 @@
 # all the required rules and symbols, along with the bonus ones, will be
 # shown here. spacing is not important
 
-# ((((A + ((!(B | (((C)))) + (((!D)))) ^ !E)) ^ F + G | H)))  =>  E   # C implies E
+((A + ((!(B | C) + !D) ^ !I)) ^ F + G | H)  =>  E   # C implies E
 (A + B) | (A + B) => E
-# C           =>      E           # C implies E
-# A + B + C   =>      D           # A and B and C implies D
+C           =>      E           # C implies E
+ A + B + C   =>      D           # A and B and C implies D
 # A | B       =>      C           # A or B implies C
 # A + !B      =>      F           # A and not B implies F
 # C | !G      =>      H           # C or not G implies H
@@ -20,4 +20,4 @@
                             # If no facts are initially true, then a simple "=" followed
                             # by a newline is used
 
-?EGJ                       # Queries : What are G, V and X ?
+?EG                       # Queries : What are G, V and X ?

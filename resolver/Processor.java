@@ -165,7 +165,7 @@ public class Processor {
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
-            if(c.v1.isNot)
+            if(c.isNot)
                 node.not1 = true;
             addNodeToListOutput(node);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three

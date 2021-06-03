@@ -1,7 +1,5 @@
 package model;
 
-import java.util.*;
-
 import resolver.Resolver;
 
 public class Node {
@@ -12,7 +10,6 @@ public class Node {
     public Operator op;
     public boolean not1 = false;
     public boolean not2 = false;
-    public List<Node> childs = new ArrayList<>();
     public int score = 0;
     public boolean fixed = false;
 
@@ -21,11 +18,6 @@ public class Node {
         this.p1 = p1;
         this.p2 = p2;
         this.op = op;
-    }
-
-    public void addChild(Node c){
-        if (!childs.contains(c))
-            childs.add(c);
     }
 
     public int setScore(){
@@ -147,7 +139,7 @@ public class Node {
 
     @Override
     public String toString(){
-        String str = not1 + " " + not2;
+        String str = "";
         str += name + "\n";
         if (p1 != null)
             str += p1.toString() + "\n";

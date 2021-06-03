@@ -29,18 +29,6 @@ public class Expert {
         }
     }
 
-    private static void addChildToNode(){
-        for (int i = 0; i < nodes.size(); ++i){
-            Node node = nodes.get(i);
-            if (node.p1 != null){
-                node.p1.addChild(node);
-            }
-            if (node.p2 != null){
-                node.p2.addChild(node);
-            }
-        }
-    }
-
     private static int setScoreToNode(){
         int score = 0;
         for (int i = 0; i < nodes.size(); ++i){
@@ -81,8 +69,6 @@ public class Expert {
 
     private static void solveForward(){
         int previousScore, actualScore;
-        // 0 step : add child for each node
-        addChildToNode();
         // 2 step : set fixed nodes
         setFixedNode();
         // 3 step : set the score for all nodes # A B C ...
@@ -104,14 +90,15 @@ public class Expert {
             if (nodes.get(i).name.compareTo("" + v.name) == 0)
                 return nodes.get(i);
         }
+        System.out.println(v.name);
         throw new Exception ("Never happen");
     }
 
     private static void solveB(Node node){
-        if (node.p1 != null){
+        if (node.p1 != null && !node.p1.fixed){
             solveB(node.p1);
         }
-        if (node.p2 != null){
+        if (node.p2 != null && !node.p2.fixed){
             solveB(node.p2);
         }
         explanation += node.updateState();
@@ -120,9 +107,7 @@ public class Expert {
     }
 
     private static void solveBackward() throws Exception{
-        // 0 step : add child for each node
-        addChildToNode();
-        // 2 step : set fixed nodes
+        // 0 step : set fixed nodes
         setFixedNode();
         for (int i = 0; i < queries.size(); ++i) {
             Node n = getNode(queries.get(i));
@@ -146,14 +131,7 @@ public class Expert {
     // Convert the fatcs and the rule into a graph
     private static void preProcessing() throws Exception{
         nodes = new Processor().preprocess(rules);
-        /*
-        System.out.println("Size: " + nodes.size());
-        System.out.println("#####################################");
-        for (int i = 0; i < nodes.size(); ++i){
-            System.out.println(nodes.get(i));
-            System.out.println("* * * * * * * * * *");
-        }
-        */
+
     }
 
     private static void checkArgs(String[]args){
@@ -187,9 +165,9 @@ public class Expert {
         }
         System.out.print("------- Parsing --------\n");
 
-        //for (int i = 0; i < rules.size(); ++i) {
-            //System.out.println("rule[" + i + "] = " + rules.get(i).toString());
-        //}
+        for (int i = 0; i < rules.size(); ++i) {
+            System.out.println("rule[" + i + "] = " + rules.get(i).toString());
+        }
         //for (int i = 0; i < variables.size(); ++i) {
             //System.out.println("variable[" + i + "] = " + variables.get(i).toString());
         //}
