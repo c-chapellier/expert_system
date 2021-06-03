@@ -10,6 +10,7 @@ public class Node {
     public Operator op;
     public boolean not1 = false;
     public boolean not2 = false;
+    public boolean isNot = false;
     public int score = 0;
     public boolean fixed = false;
 
@@ -69,6 +70,8 @@ public class Node {
                             state = Resolver.and(Resolver.not(p1.state), p2.state);
                         else
                             state = Resolver.and(Resolver.not(p1.state), Resolver.not(p2.state));
+                        if (isNot)
+                            state = Resolver.not(state);
                         break;
                     case OR:
                         //System.out.println("OR");
@@ -80,6 +83,8 @@ public class Node {
                             state = Resolver.or(Resolver.not(p1.state), p2.state);
                         else
                             state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
+                        if (isNot)
+                            state = Resolver.not(state);
                         break;
                     case XOR:
                         //System.out.println("XOR");
@@ -91,6 +96,8 @@ public class Node {
                             state = Resolver.xor(Resolver.not(p1.state), p2.state);
                         else
                             state = Resolver.xor(Resolver.not(p1.state), Resolver.not(p2.state));
+                        if (isNot)
+                            state = Resolver.not(state);
                         break;
                 }
                 ret += makeString(p1, p2);
@@ -106,6 +113,8 @@ public class Node {
                         state = Resolver.or(Resolver.not(p1.state), p2.state);
                     else
                         state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
+                    if (isNot)
+                        state = Resolver.not(state);
                     ret += makeString(p1, p2);
                     fixed = true;
                 }
@@ -118,6 +127,8 @@ public class Node {
                     state = Resolver.not(p1.state);
                 else
                     state = p1.state;
+                if (isNot)
+                        state = Resolver.not(state);
                 ret += makeString(p1);
                 fixed = true;
             }
@@ -140,11 +151,11 @@ public class Node {
     @Override
     public String toString(){
         String str = "";
-        str += name + "\n";
-        if (p1 != null)
-            str += p1.toString() + "\n";
-        if (p2 != null)
-            str += p2.toString()  + "\n";
+        str += name + " " + isNot + " " + not1 + " " + not2 + "\n";
+        // if (p1 != null)
+        //     str += p1.toString() + "\n";
+        // if (p2 != null)
+        //     str += p2.toString()  + "\n";
         return str;
     }
 }
