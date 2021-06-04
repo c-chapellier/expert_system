@@ -6,6 +6,19 @@
 (A + B) | (A + B) => E
 C           =>      E           # C implies E
  A + B + C   =>      D           # A and B and C implies D
+
+# ((((A + ((!(B | (((C)))) + (((!D)))) ^ !E)) ^ F + G | H)))  =>  E   # C implies E
+# (A + B) | (A + B) => E
+(A | !B) | C => D
+(A | (!(B))) | C => D
+(A | !(!(B))) | C => D
+(A | !!!!!B) | C => D
+
+!(A + B) ^ (C | !D) => X + !(Y + !Z)
+
+
+# C           =>      E           # C implies E
+# A + B + C   =>      D           # A and B and C implies D
 # A | B       =>      C           # A or B implies C
 # A + !B      =>      F           # A and not B implies F
 # C | !G      =>      H           # C or not G implies H

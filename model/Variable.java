@@ -4,18 +4,10 @@ public class Variable {
     public char name;
     public State state;
     public boolean fix = false;
-    // !A
-    public boolean isNot = false;
 
     public Variable(char name, State state){
         this.name = name;
         this.state = state;
-    }
-
-    public Variable(char name, State state, boolean isNot){
-        this.name = name;
-        this.state = state;
-        this.isNot = isNot;
     }
 
     public void setState(State s) throws Exception{
@@ -41,7 +33,7 @@ public class Variable {
 
     @Override
     public String toString(){
-        String str = (this.isNot ? "!" : "") + name + ": " + state;
+        String str = name + ": " + state;
         return str;
     }
     

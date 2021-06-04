@@ -141,43 +141,48 @@ public class Expert {
 
     }
 
-    private static void checkArgs(String[]args){
+    private static void checkArgs(String[] args) throws Exception {
         if (args.length != 2){
-            System.out.println( "ARsg needed : <file> <method>\n" +
-                                "\tmethod:\n" +
-                                "\t\tforward\n" +
-                                "\t\tbackward\n"
-            );
+            System.out.println( "usage: java expert <file> <method {forward, backward} >");
             System.exit(1);
         }
         if (args[1].compareTo("forward") == 0)
             method = Method.FORWARD;
         else if (args[1].compareTo("backward") == 0)
             method = Method.BACKWARD;
+        else {
+            throw new Exception("Bad method.");
+        }
     }
 
     public static void main(String[] args){
-        checkArgs(args);
-        System.out.print("--------- Expert ----------\n");
-        System.out.print("------- Parsing --------\n");
-        Parser parser = new Parser(rules, variables, queries, args[0]);
+        
         try {
+            checkArgs(args);
+            System.out.print("--------- Expert ----------\n");
+            System.out.print("------- Parsing --------\n");
+            Parser parser = new Parser(rules, variables, queries, args[0]);
             parser.parseFile();
+            for (int i = 0; i < rules.size(); ++i) {
+                System.out.println("rule[" + i + "] = " + rules.get(i).toString());
+            }
+            for (int i = 0; i < variables.size(); ++i) {
+                System.out.println("variable[" + i + "] = " + variables.get(i).toString());
+            }
+            for (int i = 0; i < queries.size(); ++i) {
+                System.out.println("query[" + i + "] = " + queries.get(i).toString());
+            }
+            System.out.print("------- Parsing --------\n");
+
+            System.out.print("------- Solving --------\n");
             preProcessing();
             solve(args);
+            System.out.print("------- Solving --------\n");
+            System.out.print("--------- Expert ----------\n");
+
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
         }
-        for (int i = 0; i < rules.size(); ++i) {
-            System.out.println("rule[" + i + "] = " + rules.get(i).toString());
-        }
-        for (int i = 0; i < variables.size(); ++i) {
-            System.out.println("variable[" + i + "] = " + variables.get(i).toString());
-        }
-        for (int i = 0; i < queries.size(); ++i) {
-            System.out.println("query[" + i + "] = " + queries.get(i).toString());
-        }
-        System.out.print("------- Parsing --------\n");
-        System.out.print("--------- Expert ----------\n");
+        
     }
 }

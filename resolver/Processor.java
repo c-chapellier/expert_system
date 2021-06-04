@@ -101,19 +101,19 @@ public class Processor {
             Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            if(p1.isNot && c.v1.isNot){
-                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not1 = true;
-                node.not2 = true;
-            } else if (p1.isNot && !c.v1.isNot) {
-                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
-                node.not1 = true;
-            } else if (!p1.isNot && c.v1.isNot) {
-                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not2 = true;
-            } else {
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
-            }
+            // if(p1.isNot && c.v1.isNot){
+            //     node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+            //     node.not1 = true;
+            //     node.not2 = true;
+            // } else if (p1.isNot && !c.v1.isNot) {
+            //     node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
+            //     node.not1 = true;
+            // } else if (!p1.isNot && c.v1.isNot) {
+            //     node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+            //     node.not2 = true;
+            // } else {
+            //     node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            // }
             if(c.isNot)
                 node.isNot = true;
             return addNodeToList(node);
@@ -125,19 +125,19 @@ public class Processor {
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            if(c.v1.isNot && c.v2.isNot){
-                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not1 = true;
-                node.not2 = true;
-            }else if(c.v1.isNot && !c.v2.isNot){
-                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
-                node.not1 = true;
-            }else if(!c.v1.isNot && c.v2.isNot){
-                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not2 = true;
-            }else{
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
-            }
+            // if(c.v1.isNot && c.v2.isNot){
+            //     node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+            //     node.not1 = true;
+            //     node.not2 = true;
+            // }else if(c.v1.isNot && !c.v2.isNot){
+            //     node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
+            //     node.not1 = true;
+            // }else if(!c.v1.isNot && c.v2.isNot){
+            //     node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
+            //     node.not2 = true;
+            // }else{
+            //     node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            // }
             if(c.isNot)
                 node.isNot = true;
             return addNodeToList(node);
@@ -145,8 +145,8 @@ public class Processor {
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
-            if(c.v1.isNot)
-                p1.isNot = true;
+            // if(c.v1.isNot)
+            //     p1.isNot = true;
             return addNodeToList(p1);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             //one condition
@@ -173,31 +173,31 @@ public class Processor {
             //one condition and one var
             resolveOutputCondition(input, c.c1);
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
-            if(c.v1.isNot)
-                node.isNot = true;
-            if(c.isNot){
-                node.isNot = node.isNot ? false : true;
-            }
+            // if(c.v1.isNot)
+            //     node.isNot = true;
+            // if(c.isNot){
+            //     node.isNot = node.isNot ? false : true;
+            // }
             addNodeToListOutput(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
             Node node1 = new Node("" + c.v1.name, input, null, Operator.AND);
             Node node2 = new Node("" + c.v2.name, input, null, Operator.AND);
-            if(c.v1.isNot)
-                node1.isNot = true;
-            if(c.v1.isNot)
-                node2.isNot = true;
-            if(c.isNot) {
-                node1.isNot = node1.isNot ? false : true;
-                node2.isNot = node2.isNot ? false : true;
-            }
+            // if(c.v1.isNot)
+            //     node1.isNot = true;
+            // if(c.v1.isNot)
+            //     node2.isNot = true;
+            // if(c.isNot) {
+            //     node1.isNot = node1.isNot ? false : true;
+            //     node2.isNot = node2.isNot ? false : true;
+            // }
             addNodeToListOutput(node1);
             addNodeToListOutput(node2);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
-            if(c.isNot)
-                node.not1 = true;
+            // if(c.v1.isNot)
+            //     node.not1 = true;
             if(c.isNot)
                 node.isNot = true;
             addNodeToListOutput(node);
