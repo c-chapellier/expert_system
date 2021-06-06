@@ -133,15 +133,15 @@ public class Condition {
         }
         if (i == line.length() - 2) {
             System.out.println("i == size");
-            // if (this.v1 == null)
-            //     this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
-            // else
+            if (this.v1 == null)
+                this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            else
                 this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
         } else {
             System.out.println("i != size");
-            // if (this.c1 == null)
-            //     this.c1 = new Condition(line.substring(i + 1));
-            // else
+            if (this.c1 == null)
+                this.c1 = new Condition(line.substring(i + 1));
+            else
                 this.c2 = new Condition(line.substring(i + 1));
         }
     }
