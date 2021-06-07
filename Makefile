@@ -8,10 +8,10 @@ ${NAME} :
 			javac $(addsuffix .java, $(SRCS))
 
 run :		${NAME}
-			java ${SRCS} inputs/example_input.py forward
+			java ${SRCS} inputs/ex1 forward
 
 rerun :		clean ${NAME}
-			java ${SRCS} inputs/example_input.py forward
+			java ${SRCS} inputs/ex1 forward
 
 clean :
 			rm -f *.class */*.class

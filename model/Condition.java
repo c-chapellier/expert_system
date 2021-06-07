@@ -92,10 +92,30 @@ public class Condition {
     }
 
     public String rmParentheses(String line) {
-        while (line.charAt(0) == '!') {
+        if (line.charAt(0) == '!' && line.length() == 2) {
             this.isNot = !this.isNot;
             line = line.substring(1);
-            System.err.println("setting: " + line + " to " + this.isNot);
+            System.err.println("setting: " + line + ": isnot = " + this.isNot);
+        }
+        while (line.charAt(0) == '!') {
+            int deep = 0;
+            for (int i = 1; i < line.length() - 1; ++i) {
+                if (line.charAt(i) == '(') {
+                    ++deep;
+                } else if (line.charAt(i) == ')') {
+                    --deep;
+                }
+                if (deep == 0) {
+                    deep = -1;
+                    break;
+                }
+            }
+            if (deep == -1) {
+                break;
+            }
+            this.isNot = !this.isNot;
+            line = line.substring(1);
+            System.err.println("setting: " + line + ": isnot = " + this.isNot);
         }
         while (line.charAt(0) == '(' && line.charAt(line.length() - 1)== ')') {
             int deep = 0;
@@ -114,10 +134,30 @@ public class Condition {
                 break;
             }
             line = line.substring(1, line.length() - 1);
-            while (line.charAt(0) == '!') {
+            if (line.charAt(0) == '!' && line.length() == 2) {
                 this.isNot = !this.isNot;
                 line = line.substring(1);
-                System.err.println("setting: " + line + " to " + this.isNot);
+                System.err.println("setting: " + line + ": isnot = " + this.isNot);
+            }
+            while (line.charAt(0) == '!') {
+                int deep2 = 0;
+                for (int i = 1; i < line.length() - 1; ++i) {
+                    if (line.charAt(i) == '(') {
+                        ++deep2;
+                    } else if (line.charAt(i) == ')') {
+                        --deep2;
+                    }
+                    if (deep2 == 0) {
+                        deep2 = -1;
+                        break;
+                    }
+                }
+                if (deep2 == -1) {
+                    break;
+                }
+                this.isNot = !this.isNot;
+                line = line.substring(1);
+                System.err.println("setting: " + line + ": isnot = " + this.isNot);
             }
         }
         return line;
@@ -125,24 +165,18 @@ public class Condition {
 
     public void getCondOrVar(int i, String line) throws Exception {
         if (i == 1) {
-            System.err.println("i == 1 [" + line.charAt(0) + "]");
+            System.err.println("i == 1 " + line.charAt(0));
             this.v1 = new Variable(line.charAt(0), State.UNDEFINED);
         } else {
-            System.err.println("i != 1 [" + line.substring(0, i) + "]");
+            System.err.println("i != 1 " + line.substring(0, i));
             this.c1 = new Condition(line.substring(0, i));
         }
         if (i == line.length() - 2) {
             System.out.println("i == size");
-            if (this.v1 == null)
-                this.v1 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
-            else
-                this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
+            this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
         } else {
             System.out.println("i != size");
-            if (this.c1 == null)
-                this.c1 = new Condition(line.substring(i + 1));
-            else
-                this.c2 = new Condition(line.substring(i + 1));
+            this.c2 = new Condition(line.substring(i + 1));
         }
     }
 

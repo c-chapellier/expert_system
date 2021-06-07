@@ -174,10 +174,10 @@ public class Expert {
             }
             System.out.print("------- Parsing --------\n");
 
-            System.out.print("------- Solving --------\n");
-            preProcessing();
-            solve(args);
-            System.out.print("------- Solving --------\n");
+            // System.out.print("------- Solving --------\n");
+            // preProcessing();
+            // solve(args);
+            // System.out.print("------- Solving --------\n");
             System.out.print("--------- Expert ----------\n");
 
         } catch (Exception e) {
