@@ -1,5 +1,5 @@
-A + X=> B
-B => !C
+A + X => B
+B => C
 !C => D
 
 =AX

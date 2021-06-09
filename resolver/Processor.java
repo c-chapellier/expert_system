@@ -61,14 +61,9 @@ public class Processor {
         }
     }
 
-    // Every input condition is made of either:
-    // 2 conditions
-    // 2 vars
-    // 1 condition and 1 var
-    // 1 var
     // this fonction create a map of all the input condition combined
-    // Only and or xor for the moment
     private Node resolveInputCondition(Condition c) throws Exception {
+        System.out.println(c);
         if (c.c1 != null && c.c2 != null){
             //two conditions
             System.out.println("TWO CONDITIONS");
@@ -77,45 +72,44 @@ public class Processor {
             Node p2 = resolveInputCondition(c.c2); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            if(p1.isNot && p2.isNot){
-                node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not1 = true;
-                node.not2 = true;
-            } else if (p1.isNot && !p2.isNot) {
-                node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
-                node.not1 = true;
-            } else if (!p1.isNot && p2.isNot) {
-                node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-                node.not2 = true;
+            if (c.isNot){
+                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node.isNot = true;
             } else {
                 node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
             }
-            if(c.isNot)
-                node.isNot = true;
             return addNodeToList(node);
-        } else if (c.c1 != null && c.v1 != null){
+        } else if (c.c2 != null && c.v1 != null){
+            //one condition and one var
+            System.out.println("ONE CONDITIONS - ONE VAR");
+            Node node = null;
+            Node p1 = resolveInputCondition(c.c2); // parent node
+            Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
+            addNodeToList(p1);
+            addNodeToList(p2);
+            // isNot
+            if (c.isNot){
+                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node.isNot = true;
+            } else {
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
+            return addNodeToList(node);
+        } else if (c.c1 != null && c.v2 != null){
             //one condition and one var
             System.out.println("ONE CONDITIONS - ONE VAR");
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
-            Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
+            Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            // if(p1.isNot && c.v1.isNot){
-            //     node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-            //     node.not1 = true;
-            //     node.not2 = true;
-            // } else if (p1.isNot && !c.v1.isNot) {
-            //     node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
-            //     node.not1 = true;
-            // } else if (!p1.isNot && c.v1.isNot) {
-            //     node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-            //     node.not2 = true;
-            // } else {
-            //     node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
-            // }
-            if(c.isNot)
+            // isNot
+            if (c.isNot){
+                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
                 node.isNot = true;
+            } else {
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
@@ -125,45 +119,45 @@ public class Processor {
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
             addNodeToList(p1);
             addNodeToList(p2);
-            // if(c.v1.isNot && c.v2.isNot){
-            //     node = new Node(concatName("not" + p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-            //     node.not1 = true;
-            //     node.not2 = true;
-            // }else if(c.v1.isNot && !c.v2.isNot){
-            //     node = new Node(concatName("not" + p1.name, c.operator, p2.name), p1, p2, c.operator);
-            //     node.not1 = true;
-            // }else if(!c.v1.isNot && c.v2.isNot){
-            //     node = new Node(concatName(p1.name, c.operator, "not" + p2.name), p1, p2, c.operator);
-            //     node.not2 = true;
-            // }else{
-            //     node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
-            // }
-            if(c.isNot)
+            //isNot
+            if (c.isNot){
+                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
                 node.isNot = true;
+            } else {
+                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+            }
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
-            // if(c.v1.isNot)
-            //     p1.isNot = true;
+            addNodeToList(p1);
+            if (c.isNot){
+                Node node = new Node("not" + c.v1.name, p1, null, Operator.AND);
+                node.isNot = true;
+                return addNodeToList(node);
+            }
             return addNodeToList(p1);
         } else if (c.c1 != null && c.v1 == null){ // last node of the three
             //one condition
             System.out.println("ONE CONDITION");
             Node p1 = resolveInputCondition(c.c1);
-            return addNodeToList(p1);
+            addNodeToList(p1);
+            //add isNot
+            if (c.isNot){
+                Node node = new Node("not" + c.v1.name, p1, null, Operator.AND);
+                node.isNot = true;
+                return addNodeToList(node);
+            }
         }
+        System.out.println(c.c1);
+        System.out.println(c.c2);
+        System.out.println(c.v1);
+        System.out.println(c.v2);
         throw new Exception("Never reached input" + c);
     }
 
-    // Every output condition is made of either:
-    // 2 conditions
-    // 2 vars
-    // 1 condition and 1 var
-    // 1 var
     // this function create a map of all the input condition combined
-    // Only and for the moment
     private void resolveOutputCondition(Node input, Condition c) {
         if (c.c1 != null && c.c2 != null){
             //two conditions
@@ -173,31 +167,23 @@ public class Processor {
             //one condition and one var
             resolveOutputCondition(input, c.c1);
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
-            // if(c.v1.isNot)
-            //     node.isNot = true;
-            // if(c.isNot){
-            //     node.isNot = node.isNot ? false : true;
-            // }
+            if(c.isNot){
+                node.isNot = node.isNot ? false : true;
+            }
             addNodeToListOutput(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
             Node node1 = new Node("" + c.v1.name, input, null, Operator.AND);
             Node node2 = new Node("" + c.v2.name, input, null, Operator.AND);
-            // if(c.v1.isNot)
-            //     node1.isNot = true;
-            // if(c.v1.isNot)
-            //     node2.isNot = true;
-            // if(c.isNot) {
-            //     node1.isNot = node1.isNot ? false : true;
-            //     node2.isNot = node2.isNot ? false : true;
-            // }
+            if(c.isNot) {
+                node1.isNot = node1.isNot ? false : true;
+                node2.isNot = node2.isNot ? false : true;
+            }
             addNodeToListOutput(node1);
             addNodeToListOutput(node2);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             Node node = new Node("" + c.v1.name, input, null, Operator.AND);
-            // if(c.v1.isNot)
-            //     node.not1 = true;
             if(c.isNot)
                 node.isNot = true;
             addNodeToListOutput(node);

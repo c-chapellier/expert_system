@@ -22,6 +22,17 @@ public class Expert {
         System.out.println("Time complexity: " + timeComplexity);
     }
 
+    private static void outputExplanation(){
+        String[] args = explanation.split("\\n");
+        explanation = "";
+        System.out.println(args.length);
+        for(int i = 0; i < args.length; ++i) {
+            if(!args[i].isEmpty())
+                explanation += args[i] + "\n";
+        }
+        System.out.println(explanation);
+    }
+
     private static void outputFinalStates(){
         for (int i = 0; i < nodes.size(); ++i){
             if (nodes.get(i).name.length() == 1)
@@ -124,14 +135,14 @@ public class Expert {
                 solveBackward();
         }
         ouputComplexity();
-        System.out.println(explanation);
+        outputExplanation();
         outputFinalStates();
     }
 
     // Convert the facts and the rule into a graph
     private static void preProcessing() throws Exception{
         nodes = new Processor().preprocess(rules);
-
+        setFixedNode();
         System.out.println("Size: " + nodes.size());
         System.out.println("#####################################");
         for (int i = 0; i < nodes.size(); ++i){
@@ -174,9 +185,9 @@ public class Expert {
             }
             System.out.print("------- Parsing --------\n");
 
-            // System.out.print("------- Solving --------\n");
-            // preProcessing();
-            // solve(args);
+            System.out.print("------- Solving --------\n");
+            preProcessing();
+            solve(args);
             // System.out.print("------- Solving --------\n");
             System.out.print("--------- Expert ----------\n");
 
