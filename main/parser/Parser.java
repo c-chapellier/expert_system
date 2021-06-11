@@ -1,11 +1,11 @@
-package parser;
+package main.parser;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import model.*;
+import main.model.*;
 
 public class Parser {
     //List des if and if
@@ -109,4 +109,5 @@ public class Parser {
         }
         scan.close();
     }
+
 }

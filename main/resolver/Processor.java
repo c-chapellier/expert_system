@@ -1,6 +1,6 @@
-package resolver;
+package main.resolver;
 
-import model.*;
+import main.model.*;
 import java.util.*;
 
 public class Processor {

@@ -1,5 +1,5 @@
-package resolver;
-import model.*;
+package main.resolver;
+import main.model.*;
 
 public class Resolver {
 

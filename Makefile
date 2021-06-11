@@ -1,4 +1,4 @@
-SRCS = Expert
+SRCS = ./main/Expert
 
 NAME = expert_system
 
@@ -14,6 +14,6 @@ rerun :		clean ${NAME}
 			java ${SRCS} inputs/ex1 forward
 
 clean :
-			rm -f *.class */*.class
+			rm -f */*.class */*/*.class
 
 re :		clean all

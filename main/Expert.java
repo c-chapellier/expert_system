@@ -1,6 +1,7 @@
-import parser.*;
-import resolver.Processor;
-import model.*;
+package main;
+import main.resolver.Processor;
+import main.parser.*;
+import main.model.*;
 import java.util.*;
 
 public class Expert {

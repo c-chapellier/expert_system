@@ -1,6 +1,6 @@
-package model;
+package main.model;
 
-import resolver.Resolver;
+import main.resolver.Resolver;
 
 public class Node {
     public String name;
