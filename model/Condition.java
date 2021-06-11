@@ -27,9 +27,9 @@ public class Condition {
 
     public Condition(String line) throws Exception {
         this.saveLine = line;
-        System.err.println("condition from: " + line);
+        // System.err.println("condition from: " + line);
         line = this.rmParentheses(line);
-        System.err.println("rm parentheses: " + line);
+        // System.err.println("rm parentheses: " + line);
         int deep = 0, xor = 0, or = 0/*, and = 0*/;
         for (int i = 0; i < line.length(); ++i) {
             if (line.charAt(i) == '(') {
@@ -86,7 +86,7 @@ public class Condition {
         }
         // only a variable without operator
         if (this.operator == null) {
-            System.err.println("null op: " + line);
+            // System.err.println("null op: " + line);
             this.v1 = new Variable(line.charAt(0), State.UNDEFINED);
         }
     }
@@ -95,7 +95,7 @@ public class Condition {
         if (line.charAt(0) == '!' && line.length() == 2) {
             this.isNot = !this.isNot;
             line = line.substring(1);
-            System.err.println("setting: " + line + ": isnot = " + this.isNot);
+            // System.err.println("setting: " + line + ": isnot = " + this.isNot);
         }
         while (line.charAt(0) == '!') {
             int deep = 0;
@@ -115,7 +115,7 @@ public class Condition {
             }
             this.isNot = !this.isNot;
             line = line.substring(1);
-            System.err.println("setting: " + line + ": isnot = " + this.isNot);
+            // System.err.println("setting: " + line + ": isnot = " + this.isNot);
         }
         while (line.charAt(0) == '(' && line.charAt(line.length() - 1)== ')') {
             int deep = 0;
@@ -137,7 +137,7 @@ public class Condition {
             if (line.charAt(0) == '!' && line.length() == 2) {
                 this.isNot = !this.isNot;
                 line = line.substring(1);
-                System.err.println("setting: " + line + ": isnot = " + this.isNot);
+                // System.err.println("setting: " + line + ": isnot = " + this.isNot);
             }
             while (line.charAt(0) == '!') {
                 int deep2 = 0;
@@ -157,7 +157,7 @@ public class Condition {
                 }
                 this.isNot = !this.isNot;
                 line = line.substring(1);
-                System.err.println("setting: " + line + ": isnot = " + this.isNot);
+                // System.err.println("setting: " + line + ": isnot = " + this.isNot);
             }
         }
         return line;
@@ -165,17 +165,17 @@ public class Condition {
 
     public void getCondOrVar(int i, String line) throws Exception {
         if (i == 1) {
-            System.err.println("i == 1 " + line.charAt(0));
+            // System.err.println("i == 1 " + line.charAt(0));
             this.v1 = new Variable(line.charAt(0), State.UNDEFINED);
         } else {
-            System.err.println("i != 1 " + line.substring(0, i));
+            // System.err.println("i != 1 " + line.substring(0, i));
             this.c1 = new Condition(line.substring(0, i));
         }
         if (i == line.length() - 2) {
-            System.out.println("i == size");
+            // System.out.println("i == size");
             this.v2 = new Variable(line.charAt(line.length() - 1), State.UNDEFINED);
         } else {
-            System.out.println("i != size");
+            // System.out.println("i != size");
             this.c2 = new Condition(line.substring(i + 1));
         }
     }

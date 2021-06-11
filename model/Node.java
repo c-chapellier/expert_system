@@ -8,8 +8,6 @@ public class Node {
     public Node p1;
     public Node p2;
     public Operator op;
-    // public boolean not1 = false;
-    // public boolean not2 = false;
     public boolean isNot = false;
     public int score = 0;
     public boolean fixed = false;
@@ -62,40 +60,19 @@ public class Node {
                 switch(op) {
                     case AND:
                         //System.out.println("AND");
-                        //if(!not1 && !not2)
                         state = Resolver.and(p1.state, p2.state);
-                        // else if (!not1 && not2)
-                        //     state = Resolver.and(p1.state, Resolver.not(p2.state));
-                        // else if (not1 && !not2)
-                        //     state = Resolver.and(Resolver.not(p1.state), p2.state);
-                        // else
-                        //     state = Resolver.and(Resolver.not(p1.state), Resolver.not(p2.state));
                         if (isNot)
                             state = Resolver.not(state);
                         break;
                     case OR:
                         //System.out.println("OR");
-                        //if(!not1 && !not2)
                         state = Resolver.or(p1.state, p2.state);
-                        // else if (!not1 && not2)
-                        //     state = Resolver.or(p1.state, Resolver.not(p2.state));
-                        // else if (not1 && !not2)
-                        //     state = Resolver.or(Resolver.not(p1.state), p2.state);
-                        // else
-                        //     state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
                         if (isNot)
                             state = Resolver.not(state);
                         break;
                     case XOR:
                         //System.out.println("XOR");
-                        //if(!not1 && !not2)
                         state = Resolver.xor(p1.state, p2.state);
-                        // else if (!not1 && not2)
-                        //     state = Resolver.xor(p1.state, Resolver.not(p2.state));
-                        // else if (not1 && !not2)
-                        //     state = Resolver.xor(Resolver.not(p1.state), p2.state);
-                        // else
-                        //     state = Resolver.xor(Resolver.not(p1.state), Resolver.not(p2.state));
                         if (isNot)
                             state = Resolver.not(state);
                         break;
@@ -105,31 +82,22 @@ public class Node {
             } else if (p1.fixed || p2.fixed){
                 System.out.println("only one is fixed");
                 if (op == Operator.OR){
-                    //if(!not1 && !not2)
                     state = Resolver.or(p1.state, p2.state);
-                    // else if (!not1 && not2)
-                    //     state = Resolver.or(p1.state, Resolver.not(p2.state));
-                    // else if (not1 && !not2)
-                    //     state = Resolver.or(Resolver.not(p1.state), p2.state);
-                    // else
-                    //     state = Resolver.or(Resolver.not(p1.state), Resolver.not(p2.state));
                     if (isNot)
                         state = Resolver.not(state);
                     ret += makeString(p1, p2);
                     fixed = true;
                 }
             }
-        } else if (p1 != null && p2 == null) {
+        } else if (p1 != null || p2 != null) {
             System.out.println(name + " has one parents");
-            if (p1.fixed){
+            Node tmp = p1 == null ? p2 : p1;
+            if (tmp.fixed) {
                 System.out.println("and he is fixed");
-                // if (not1)
-                //     state = Resolver.not(p1.state);
-                // else
-                state = p1.state;
+                state = tmp.state;
                 if (isNot)
-                        state = Resolver.not(state);
-                ret += makeString(p1);
+                    state = Resolver.not(state);
+                ret += makeString(tmp);
                 fixed = true;
             }
         } else {
@@ -151,10 +119,12 @@ public class Node {
     @Override
     public String toString(){
         String str = "";
-        str += name + "\n";
+        str += "name: " + name + "\n";
+        str += "p1: " + (p1 != null ? p1.name : "null") + "\n";
+        str += "p2: " + (p2 != null ? p2.name : "null") + "\n";
         str += "fixed: " + fixed + "\n";
         str += "isNot: " + isNot + "\n";
-        str += "state: " + state + "\n";
+        str += "state: " + state;
         return str;
     }
 }

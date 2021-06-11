@@ -76,10 +76,10 @@ public class Parser {
         } else if (line.charAt(0) == '?') {
             this.parseQueries(line);
         } else {
-            System.out.println("line: " + line);
+            // System.out.println("line: " + line);
             line = removeUselssP1(line);
             line = removeUselssP2(line);
-            System.out.println("rmUselessP12: " + line);
+            // System.out.println("rmUselessP12: " + line);
             index = line.indexOf("<=>");
             if (index != -1) {
                 String reactants = line.substring(0, index);

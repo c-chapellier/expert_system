@@ -105,13 +105,24 @@ public class Expert {
         throw new Exception ("Never happen");
     }
 
+    // what a good name man
     private static void solveB(Node node){
+        System.out.print("\033[91msolve[" + node.name + "]\033[0m");
+        System.out.print("[" + (node.p1 != null ? node.p1.name : "null") + "]");
+        System.out.println("[" + (node.p2 != null ? node.p2.name : "null") + "]");
         if (node.p1 != null && !node.p1.fixed){
+            System.out.print("1: ");
             solveB(node.p1);
         }
         if (node.p2 != null && !node.p2.fixed){
+            System.out.print("2: ");
             solveB(node.p2);
         }
+        // System.out.println("----- " + node.name + " -----");
+        // for (int i = 0; i < nodes.size(); ++i) {
+        //     System.out.println(nodes.get(i).name + ": " + nodes.get(i).state);
+        // }
+        // System.out.println("----------------");
         explanation += node.updateState();
         explanation += "\n";
         ++timeComplexity;
@@ -119,7 +130,7 @@ public class Expert {
 
     private static void solveBackward() throws Exception{
         // 0 step : set fixed nodes
-        setFixedNode();
+        setFixedNode(); // appears 2 times bro wtf
         for (int i = 0; i < queries.size(); ++i) {
             Node n = getNode(queries.get(i));
             solveB(n);
