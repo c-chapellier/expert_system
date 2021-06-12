@@ -74,8 +74,8 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = resolveInputCondition(c.c2); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            p1 = addNodeToList(p1);
+            p2 = addNodeToList(p2);
             if (c.isNot){
                 node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
                 node.isNot = true;
@@ -89,8 +89,8 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c2); // parent node
             Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            p1 = addNodeToList(p1);
+            p2 = addNodeToList(p2);
             // isNot
             if (c.isNot){
                 node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
@@ -105,8 +105,8 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            p1 = addNodeToList(p1);
+            p2 = addNodeToList(p2);
             // isNot
             if (c.isNot){
                 node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
@@ -121,8 +121,8 @@ public class Processor {
             Node node = null;
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            p1 = addNodeToList(p1);
+            p2 = addNodeToList(p2);
             //isNot
             if (c.isNot){
                 node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
@@ -135,7 +135,7 @@ public class Processor {
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
-            addNodeToList(p1);
+            p1 = addNodeToList(p1);
             if (c.isNot){
                 Node node = new Node("not" + c.v1.name, p1, null, Operator.AND);
                 node.isNot = true;

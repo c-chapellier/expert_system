@@ -106,6 +106,20 @@ public class Expert {
         throw new Exception ("Never happen");
     }
 
+    private static void printMap(Node node) {
+        System.out.print("\033[94mprint[" + node.name + "]\033[0m");
+        System.out.print("[" + (node.p1 != null ? node.p1.name : "null") + "]");
+        System.out.println("[" + (node.p2 != null ? node.p2.name : "null") + "]");
+        if (node.p1 != null && !node.p1.fixed){
+            System.out.print("1: ");
+            printMap(node.p1);
+        }
+        if (node.p2 != null && !node.p2.fixed){
+            System.out.print("2: ");
+            printMap(node.p2);
+        }
+    }
+
     // what a good name man
     private static void solveB(Node node){
         System.out.print("\033[91msolve[" + node.name + "]\033[0m");
@@ -199,7 +213,10 @@ public class Expert {
 
             System.out.print("------- Solving --------\n");
             preProcessing();
+            printMap(getNode(new Variable('D', State.UNDEFINED)));
             solve(args);
+            printMap(getNode(new Variable('D', State.UNDEFINED)));
+
             // System.out.print("------- Solving --------\n");
             System.out.print("--------- Expert ----------\n");
 
