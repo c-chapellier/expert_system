@@ -48,18 +48,22 @@ public class Processor {
                     Node tmp = already.p1;
                     already.p1 = newParent;
                     already.p2 = tmp;
+                    already.op = Operator.OR;
                     allNodes.add(newParent);
                 }
             } else if (already.p1 != null){
                 System.out.println("ONE PARENT: " + node.name);
                 already.p2 = node.p1;
-                already.op = Operator.AND;
+                already.op = Operator.OR;
             } else if (already.p2 != null){
                 System.out.println("ONE PARENT: " + node.name);
                 already.p1 = node.p1;
-                already.op = Operator.AND;
+                already.op = Operator.OR;
             } else {
-                throw new Exception("Unacceptable");
+                already.p1 = node.p1;
+                already.op = Operator.AND;
+                System.out.println(already);
+                //throw new Exception("Unacceptable");
             }
             return already;
         }

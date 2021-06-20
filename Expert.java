@@ -59,7 +59,7 @@ public class Expert {
     private static void setFixedNode(){
         for (int i = 0; i < nodes.size(); ++i){
             Node node = nodes.get(i);
-            node.state = State.UNDEFINED;
+            node.state = State.FALSE;
             node.fixed = false;
             for (int j = 0; j < variables.size(); ++j){
                 if(node.name.compareTo("" + variables.get(j).name) == 0){
