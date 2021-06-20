@@ -107,9 +107,9 @@ public class Expert {
 
     // what a good name man
     private static void solveB(Node node){
-        System.out.print("\033[91msolve[" + node.name + "]\033[0m");
-        System.out.print("[" + (node.p1 != null ? node.p1.name : "null") + "]");
-        System.out.println("[" + (node.p2 != null ? node.p2.name : "null") + "]");
+        System.out.print("\033[91msolve[" + node.name + "] at + " + System.identityHashCode(node) + " \033[0m");
+        System.out.print("[" + (node.p1 != null ? node.p1.name + " at " + System.identityHashCode(node.p1) : "null") + "]");
+        System.out.println("[" + (node.p2 != null ? node.p2.name + " at " + System.identityHashCode(node.p2) : "null") + "]");
         if (node.p1 != null && !node.p1.fixed){
             System.out.print("1: ");
             solveB(node.p1);
@@ -123,8 +123,11 @@ public class Expert {
         //     System.out.println(nodes.get(i).name + ": " + nodes.get(i).state);
         // }
         // System.out.println("----------------");
-        explanation += node.updateState();
-        explanation += "\n";
+        String tmp = node.updateState();
+        System.out.println("\033[91mexplanation\033[0m[" + tmp + "]");
+        System.out.println("\033[91mstate\033[0m[" + node.state + "]");
+
+        explanation += tmp + "\n";
         ++timeComplexity;
     }
 

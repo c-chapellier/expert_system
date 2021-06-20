@@ -74,13 +74,13 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = resolveInputCondition(c.c2); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            Node tmp1 = addNodeToList(p1);
+            Node tmp2 = addNodeToList(p2);
             if (c.isNot){
-                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node("not" + concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
                 node.isNot = true;
             } else {
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node(concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
             }
             return addNodeToList(node);
         } else if (c.c2 != null && c.v1 != null){
@@ -89,14 +89,14 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c2); // parent node
             Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            Node tmp1 = addNodeToList(p1);
+            Node tmp2 = addNodeToList(p2);
             // isNot
             if (c.isNot){
-                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node("not" + concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
                 node.isNot = true;
             } else {
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node(concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
             }
             return addNodeToList(node);
         } else if (c.c1 != null && c.v2 != null){
@@ -105,14 +105,14 @@ public class Processor {
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            Node tmp1 = addNodeToList(p1);
+            Node tmp2 = addNodeToList(p2);
             // isNot
             if (c.isNot){
-                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node("not" + concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
                 node.isNot = true;
             } else {
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node(concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
             }
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
@@ -121,23 +121,23 @@ public class Processor {
             Node node = null;
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
-            addNodeToList(p1);
-            addNodeToList(p2);
+            Node tmp1 = addNodeToList(p1);
+            Node tmp2 = addNodeToList(p2);
             //isNot
             if (c.isNot){
-                node = new Node("not" + concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node("not" + concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
                 node.isNot = true;
             } else {
-                node = new Node(concatName(p1.name, c.operator, p2.name), p1, p2, c.operator);
+                node = new Node(concatName(tmp1.name, c.operator, tmp2.name), tmp1, tmp2, c.operator);
             }
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
             System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
-            addNodeToList(p1);
+            Node tmp = addNodeToList(p1);
             if (c.isNot){
-                Node node = new Node("not" + c.v1.name, p1, null, Operator.AND);
+                Node node = new Node("not" + c.v1.name, tmp, null, Operator.AND);
                 node.isNot = true;
                 return addNodeToList(node);
             }

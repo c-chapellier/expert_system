@@ -51,8 +51,10 @@ public class Node {
 
     public String updateState(){
         String ret = "";
-        if (fixed)
+        if (fixed) {
+            System.out.println(name + " is fixed");
             return ret;
+        }
         if (p1 != null && p2 != null) {
             //System.out.println(name + " has two parents ");
             if (p1.fixed && p2.fixed) {
@@ -91,7 +93,7 @@ public class Node {
             }
         } else if (p1 != null || p2 != null) {
             System.out.println(name + " has one parents");
-            Node tmp = p1 == null ? p2 : p1;
+            Node tmp = p1 != null ? p1 : p2;
             if (tmp.fixed) {
                 System.out.println("and he is fixed");
                 state = tmp.state;
@@ -119,9 +121,10 @@ public class Node {
     @Override
     public String toString(){
         String str = "";
+        str += "addr: " + System.identityHashCode(this) + "\n";
         str += "name: " + name + "\n";
-        str += "p1: " + (p1 != null ? p1.name : "null") + "\n";
-        str += "p2: " + (p2 != null ? p2.name : "null") + "\n";
+        str += "p1: " + (p1 != null ? p1.name + " at " + System.identityHashCode(p1) : "null") + "\n";
+        str += "p2: " + (p2 != null ? p2.name + " at " + System.identityHashCode(p2) : "null") + "\n";
         str += "fixed: " + fixed + "\n";
         str += "isNot: " + isNot + "\n";
         str += "state: " + state;
