@@ -195,34 +195,45 @@ public class Expert {
         }
     }
 
+    public static String checkInput(String str){
+        str = str.replaceAll("\\s+", "");
+        return str;
+    }
+
     public static void main(String[] args){
-        
+        Scanner scan = new Scanner(System.in);
         try {
             checkArgs(args);
             System.out.print("--------- Expert ----------\n");
             System.out.print("------- Parsing --------\n");
-            Parser parser = new Parser(rules, variables, queries, args[0]);
-            parser.parseFile();
-            for (int i = 0; i < rules.size(); ++i) {
-                System.out.println("rule[" + i + "] = " + rules.get(i).toString());
+            while(true){
+                String input = scan.nextLine();
+                input = checkInput(input);
+                if (input.toLowerCase().compareTo("exit") == 0)
+                    System.exit(0);
+                Parser parser = new Parser(rules, variables, queries, args[0]);
+                // replace variables
+                parser.parseFile();
+                /*for (int i = 0; i < rules.size(); ++i) {
+                    System.out.println("rule[" + i + "] = " + rules.get(i).toString());
+                }
+                for (int i = 0; i < variables.size(); ++i) {
+                    System.out.println("variable[" + i + "] = " + variables.get(i).toString());
+                }
+                for (int i = 0; i < queries.size(); ++i) {
+                    System.out.println("query[" + i + "] = " + queries.get(i).toString());
+                }
+                System.out.print("------- Parsing --------\n");
+                System.out.print("------- Solving --------\n");
+                */
+                preProcessing();
+                solve(args);
             }
-            for (int i = 0; i < variables.size(); ++i) {
-                System.out.println("variable[" + i + "] = " + variables.get(i).toString());
-            }
-            for (int i = 0; i < queries.size(); ++i) {
-                System.out.println("query[" + i + "] = " + queries.get(i).toString());
-            }
-            System.out.print("------- Parsing --------\n");
-
-            System.out.print("------- Solving --------\n");
-            preProcessing();
-            solve(args);
-            // System.out.print("------- Solving --------\n");
-            System.out.print("--------- Expert ----------\n");
 
         } catch (Exception e) {
             System.out.println("Exception -> " + e.getMessage());
+            scan.close();
         }
-        
+        scan.close();
     }
 }
