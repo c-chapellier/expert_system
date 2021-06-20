@@ -11,11 +11,11 @@ public class Expert {
     private static Operator defaultOperator = Operator.AND;
     private static State defaultState = State.UNDEFINED;
     //List des if and if
-    private static final List<Rule> rules = new ArrayList<>();
+    private static List<Rule> rules = new ArrayList<>();
     //Variables avec leur état initiale
-    private static final List<Variable> variables = new ArrayList<>();
+    private static List<Variable> variables = new ArrayList<>();
     //Variables à déterminer la valeur
-    private static final List<Variable> queries = new ArrayList<>();
+    private static List<Variable> queries = new ArrayList<>();
     //The graph
     private static List<Node> nodes;
 
@@ -200,6 +200,15 @@ public class Expert {
         return str;
     }
 
+    public static void parseInput(String line) throws Exception {
+        for (int i = 1; i < line.length(); ++i) {
+            if (!Character.isUpperCase(line.charAt(i))) {
+                throw new Exception("States must only be uppercase letters.");
+            }
+            variables.add(new Variable(line.charAt(i), State.TRUE));
+        }
+    }
+
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         try {
@@ -207,6 +216,10 @@ public class Expert {
             System.out.print("--------- Expert ----------\n");
             System.out.print("------- Parsing --------\n");
             while(true){
+                //List des if and if
+                rules = new ArrayList<>();
+                //Variables à déterminer la valeur
+                queries = new ArrayList<>();
                 String input = scan.nextLine();
                 input = checkInput(input);
                 if (input.toLowerCase().compareTo("exit") == 0)
@@ -214,6 +227,9 @@ public class Expert {
                 Parser parser = new Parser(rules, variables, queries, args[0]);
                 // replace variables
                 parser.parseFile();
+                //Variables avec leur état initiale
+                variables = new ArrayList<>();
+                parseInput(input);
                 /*for (int i = 0; i < rules.size(); ++i) {
                     System.out.println("rule[" + i + "] = " + rules.get(i).toString());
                 }
