@@ -8,6 +8,8 @@ public class Expert {
     private static int timeComplexity;
     private static int spaceComplexity;
     private static String explanation = "";
+    private static Operator defaultOperator = Operator.AND;
+    private static State defaultState = State.UNDEFINED;
     //List des if and if
     private static final List<Rule> rules = new ArrayList<>();
     //Variables avec leur état initiale
@@ -59,7 +61,7 @@ public class Expert {
     private static void setFixedNode(){
         for (int i = 0; i < nodes.size(); ++i){
             Node node = nodes.get(i);
-            node.state = State.FALSE;
+            node.state = defaultState;
             node.fixed = false;
             for (int j = 0; j < variables.size(); ++j){
                 if(node.name.compareTo("" + variables.get(j).name) == 0){
@@ -80,8 +82,6 @@ public class Expert {
 
     private static void solveForward(){
         int previousScore, actualScore;
-        // 2 step : set fixed nodes
-        setFixedNode();
         // 3 step : set the score for all nodes # A B C ...
         previousScore = setScoreToNode();
         actualScore = updateScoreToNode();
@@ -132,8 +132,6 @@ public class Expert {
     }
 
     private static void solveBackward() throws Exception{
-        // 0 step : set fixed nodes
-        setFixedNode(); // appears 2 times bro wtf
         for (int i = 0; i < queries.size(); ++i) {
             Node n = getNode(queries.get(i));
             solveB(n);
@@ -155,7 +153,7 @@ public class Expert {
 
     // Convert the facts and the rule into a graph
     private static void preProcessing() throws Exception{
-        nodes = new Processor().preprocess(rules);
+        nodes = new Processor(defaultOperator).preprocess(rules);
         setFixedNode();
         System.out.println("Size: " + nodes.size());
         System.out.println("#####################################");
@@ -167,16 +165,33 @@ public class Expert {
     }
 
     private static void checkArgs(String[] args) throws Exception {
-        if (args.length != 2){
-            System.out.println( "usage: java expert <file> <method {forward, backward} >");
+        if (args.length != 4){
+            System.out.println( "usage: java expert <file> <method {forward, backward} > <default state {false, undefined} > <default link {or, and} >");
             System.exit(1);
         }
+
         if (args[1].compareTo("forward") == 0)
             method = Method.FORWARD;
         else if (args[1].compareTo("backward") == 0)
             method = Method.BACKWARD;
         else {
             throw new Exception("Bad method.");
+        }
+
+        if (args[2].compareTo("false") == 0)
+            defaultState = State.FALSE;
+        else if (args[2].compareTo("undefined") == 0)
+            defaultState = State.UNDEFINED;
+        else {
+            throw new Exception("Bad state.");
+        }
+
+        if (args[3].compareTo("or") == 0)
+            defaultOperator = Operator.OR;
+        else if (args[3].compareTo("and") == 0)
+            defaultOperator = Operator.AND;
+        else {
+            throw new Exception("Bad link.");
         }
     }
 

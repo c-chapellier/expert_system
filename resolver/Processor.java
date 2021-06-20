@@ -6,11 +6,13 @@ import java.util.*;
 public class Processor {
     private Map<Operator, String> map = new TreeMap<>();
     private List<Node> allNodes = new ArrayList<>();
+    private Operator defaultOperator;
 
-    public Processor(){
+    public Processor(Operator defaultOperator){
         map.put(Operator.AND, "and");
         map.put(Operator.OR, "or");
         map.put(Operator.XOR, "xor");
+        this.defaultOperator = defaultOperator;
     }
     
     public List<Node> preprocess(List<Rule> rules) throws Exception{
@@ -48,17 +50,17 @@ public class Processor {
                     Node tmp = already.p1;
                     already.p1 = newParent;
                     already.p2 = tmp;
-                    already.op = Operator.OR;
+                    already.op = this.defaultOperator;
                     allNodes.add(newParent);
                 }
             } else if (already.p1 != null){
                 System.out.println("ONE PARENT: " + node.name);
                 already.p2 = node.p1;
-                already.op = Operator.OR;
+                already.op = this.defaultOperator;
             } else if (already.p2 != null){
                 System.out.println("ONE PARENT: " + node.name);
                 already.p1 = node.p1;
-                already.op = Operator.OR;
+                already.op = this.defaultOperator;
             } else {
                 already.p1 = node.p1;
                 already.op = Operator.AND;
