@@ -27,7 +27,7 @@ public class Expert {
     private static void outputExplanation(){
         String[] args = explanation.split("\\n");
         explanation = "";
-        System.out.println(args.length);
+        //System.out.println(args.length);
         for(int i = 0; i < args.length; ++i) {
             if(!args[i].isEmpty())
                 explanation += args[i] + "\n";
