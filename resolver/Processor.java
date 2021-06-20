@@ -44,7 +44,7 @@ public class Processor {
         } else {
             Node already = allNodes.get(allNodes.indexOf(node));
             if (already.p1 != null && already.p2 != null){
-                System.out.println("TWO PARENT: " + node.name);
+                //System.out.println("TWO PARENT: " + node.name);
                 Node newParent = new Node(concatName(already.p1.name, already.op, already.p2.name), already.p1, already.p2, already.op);
                 if (allNodes.contains(newParent)){
                     Node tmp = already.p1;
@@ -54,17 +54,17 @@ public class Processor {
                     allNodes.add(newParent);
                 }
             } else if (already.p1 != null){
-                System.out.println("ONE PARENT: " + node.name);
+                //System.out.println("ONE PARENT: " + node.name);
                 already.p2 = node.p1;
                 already.op = this.defaultOperator;
             } else if (already.p2 != null){
-                System.out.println("ONE PARENT: " + node.name);
+                //System.out.println("ONE PARENT: " + node.name);
                 already.p1 = node.p1;
                 already.op = this.defaultOperator;
             } else {
                 already.p1 = node.p1;
                 already.op = Operator.AND;
-                System.out.println(already);
+                //System.out.println(already);
                 //throw new Exception("Unacceptable");
             }
             return already;
@@ -73,10 +73,10 @@ public class Processor {
 
     // this fonction create a map of all the input condition combined
     private Node resolveInputCondition(Condition c) throws Exception {
-        System.out.println(c);
+        //System.out.println(c);
         if (c.c1 != null && c.c2 != null){
             //two conditions
-            System.out.println("TWO CONDITIONS");
+            //System.out.println("TWO CONDITIONS");
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = resolveInputCondition(c.c2); // parent node
@@ -91,7 +91,7 @@ public class Processor {
             return addNodeToList(node);
         } else if (c.c2 != null && c.v1 != null){
             //one condition and one var
-            System.out.println("ONE CONDITIONS - ONE VAR");
+            //System.out.println("ONE CONDITIONS - ONE VAR");
             Node node = null;
             Node p1 = resolveInputCondition(c.c2); // parent node
             Node p2 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
@@ -107,7 +107,7 @@ public class Processor {
             return addNodeToList(node);
         } else if (c.c1 != null && c.v2 != null){
             //one condition and one var
-            System.out.println("ONE CONDITIONS - ONE VAR");
+            //System.out.println("ONE CONDITIONS - ONE VAR");
             Node node = null;
             Node p1 = resolveInputCondition(c.c1); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
@@ -123,7 +123,7 @@ public class Processor {
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 != null){
             //two var
-            System.out.println("TWO VARS");
+            //System.out.println("TWO VARS");
             Node node = null;
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND); // parent node
             Node p2 = new Node("" + c.v2.name, null, null, Operator.AND); // parent node
@@ -139,7 +139,7 @@ public class Processor {
             return addNodeToList(node);
         } else if (c.v1 != null && c.v2 == null){ // last node of the three
             //one var
-            System.out.println("ONE VAR");
+            //System.out.println("ONE VAR");
             Node p1 = new Node("" + c.v1.name, null, null, Operator.AND);
             Node tmp = addNodeToList(p1);
             if (c.isNot){
@@ -161,10 +161,10 @@ public class Processor {
             //     return addNodeToList(node);
             // }
         }
-        System.out.println(c.c1);
-        System.out.println(c.c2);
-        System.out.println(c.v1);
-        System.out.println(c.v2);
+        //System.out.println(c.c1);
+        //System.out.println(c.c2);
+        //System.out.println(c.v1);
+        //System.out.println(c.v2);
         throw new Exception("Never reached input" + c);
     }
 

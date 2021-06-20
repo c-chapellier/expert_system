@@ -85,11 +85,9 @@ public class Expert {
         // 3 step : set the score for all nodes # A B C ...
         previousScore = setScoreToNode();
         actualScore = updateScoreToNode();
-        System.out.println(previousScore + " " + actualScore);
         
         // 4 step : for each known node, decrement the score from other nodes from one if they come from it
         while(previousScore > actualScore) {
-            System.out.println(previousScore + " " + actualScore);
             previousScore = actualScore;
             updateStateNode();
             actualScore = updateScoreToNode();
@@ -101,21 +99,20 @@ public class Expert {
             if (nodes.get(i).name.compareTo("" + v.name) == 0)
                 return nodes.get(i);
         }
-        System.out.println(v.name);
         throw new Exception ("Never happen");
     }
 
     // what a good name man
     private static void solveB(Node node){
-        System.out.print("\033[91msolve[" + node.name + "] at + " + System.identityHashCode(node) + " \033[0m");
-        System.out.print("[" + (node.p1 != null ? node.p1.name + " at " + System.identityHashCode(node.p1) : "null") + "]");
-        System.out.println("[" + (node.p2 != null ? node.p2.name + " at " + System.identityHashCode(node.p2) : "null") + "]");
+        //System.out.print("\033[91msolve[" + node.name + "] at + " + System.identityHashCode(node) + " \033[0m");
+        //System.out.print("[" + (node.p1 != null ? node.p1.name + " at " + System.identityHashCode(node.p1) : "null") + "]");
+        //System.out.println("[" + (node.p2 != null ? node.p2.name + " at " + System.identityHashCode(node.p2) : "null") + "]");
         if (node.p1 != null && !node.p1.fixed){
-            System.out.print("1: ");
+            //System.out.print("1: ");
             solveB(node.p1);
         }
         if (node.p2 != null && !node.p2.fixed){
-            System.out.print("2: ");
+            //System.out.print("2: ");
             solveB(node.p2);
         }
         // System.out.println("----- " + node.name + " -----");
@@ -124,8 +121,8 @@ public class Expert {
         // }
         // System.out.println("----------------");
         String tmp = node.updateState();
-        System.out.println("\033[91mexplanation\033[0m[" + tmp + "]");
-        System.out.println("\033[91mstate\033[0m[" + node.state + "]");
+        //System.out.println("\033[91mexplanation\033[0m[" + tmp + "]");
+        //System.out.println("\033[91mstate\033[0m[" + node.state + "]");
 
         explanation += tmp + "\n";
         ++timeComplexity;
@@ -155,13 +152,6 @@ public class Expert {
     private static void preProcessing() throws Exception{
         nodes = new Processor(defaultOperator).preprocess(rules);
         setFixedNode();
-        System.out.println("Size: " + nodes.size());
-        System.out.println("#####################################");
-        for (int i = 0; i < nodes.size(); ++i){
-            System.out.println(nodes.get(i));
-            System.out.println("* * * * * * * * * *");
-        }
-
     }
 
     private static void checkArgs(String[] args) throws Exception {
@@ -213,23 +203,21 @@ public class Expert {
         Scanner scan = new Scanner(System.in);
         try {
             checkArgs(args);
-            System.out.print("--------- Expert ----------\n");
-            System.out.print("------- Parsing --------\n");
             while(true){
-                //List des if and if
                 rules = new ArrayList<>();
-                //Variables à déterminer la valeur
                 queries = new ArrayList<>();
+
                 String input = scan.nextLine();
                 input = checkInput(input);
+
                 if (input.toLowerCase().compareTo("exit") == 0)
                     System.exit(0);
                 Parser parser = new Parser(rules, variables, queries, args[0]);
-                // replace variables
                 parser.parseFile();
-                //Variables avec leur état initiale
+
                 variables = new ArrayList<>();
                 parseInput(input);
+
                 /*for (int i = 0; i < rules.size(); ++i) {
                     System.out.println("rule[" + i + "] = " + rules.get(i).toString());
                 }

@@ -52,7 +52,7 @@ public class Node {
     public String updateState(){
         String ret = "";
         if (fixed) {
-            System.out.println(name + " is fixed");
+            //System.out.println(name + " is fixed");
             return ret;
         }
         if (p1 != null && p2 != null) {
@@ -82,7 +82,7 @@ public class Node {
                 ret += makeString(p1, p2);
                 fixed = true;
             } else if (p1.fixed || p2.fixed){
-                System.out.println("only one is fixed");
+                //System.out.println("only one is fixed");
                 if (op == Operator.OR){
                     state = Resolver.or(p1.state, p2.state);
                     if (isNot)
@@ -92,10 +92,10 @@ public class Node {
                 }
             }
         } else if (p1 != null || p2 != null) {
-            System.out.println(name + " has one parents");
+            //System.out.println(name + " has one parents");
             Node tmp = p1 != null ? p1 : p2;
             if (tmp.fixed) {
-                System.out.println("and he is fixed");
+                //System.out.println("and he is fixed");
                 state = tmp.state;
                 if (isNot)
                     state = Resolver.not(state);
